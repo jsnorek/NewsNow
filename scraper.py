@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine, Column, Integer, String 
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Database setup with SQLite
+# Database connection setup with SQLite to store scraped news article
 engine = create_engine('sqlite:///news.db') # Creates a connection to the SQLite database named news.db
 Session = sessionmaker(bind=engine) # Defines a factory to create new Session objects
 session = Session() # Initializes a session to interact with the database
