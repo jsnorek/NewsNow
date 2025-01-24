@@ -22,29 +22,34 @@ Base.metadata.create_all(engine) # Creates the news_articles table in database u
 
 # Web scraping
 def scrape_news():  
-    url = "https://www.bbc.com/news" # Target URL for scraping
+    url = "https://www.npr.org/sections/news/" # Target URL for scraping
     response = requests.get(url) # Send HTTP request to the specified url and save the response
     
     # Check to see if the request was successful
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser') # Create a BeautifulSoup object by passing the two arguments of raw HTML and the parser we want to use
-        articles = soup.find_all('h2', attrs={'data-testid': 'card-headline'}) # Searches for all h2 elements with the specified testid attribute (pulled from bbc website code)
+        articles = soup.find_all('h2', class_='title') # Searches for all h2 elements with the specified testid attribute (pulled from bbc website code)
         print(f"Found {len(articles)} articles") # Prints the number of articles found
 
         # Loop through articles
         for article in articles:
-            headline = article.text # Get text from headline
-            link = article.find_parent('a')['href'] # Locates the parent tag that contains the URL
-            if not link.startswith('http'): # Ensures link is valid and complete
-                link= f'https://www.bbc.com{link}'
+            headline = article.text.strip() # Get text from headline
+            a_tag = article.find('a')
+
+            link = None
+            if a_tag:
+                link = a_tag['href'] # Locates the parent tag that contains the URL
+                if not link.startswith('http'): # Ensures link is valid and complete
+                    link= f'https://www.npr.org{link}'
 
             # Debugging print to print scraped headline and link
             print(f"Scraped headline: {headline}")
-            print(f"Link: {link}")
+            print(f"Link: {link if link else 'No link found'}")
 
-            # Create new NewsArticle object for each article and add it to the session/database
-            news_item = NewsArticle(headline=headline, link=link)
-            session.add(news_item)
+            if link:
+                # Create new NewsArticle object for each article and add it to the session/database
+                news_item = NewsArticle(headline=headline, link=link)
+                session.add(news_item)
     
         # Saves all the changes to the database
         session.commit()
