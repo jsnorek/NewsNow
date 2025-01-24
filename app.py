@@ -1,15 +1,7 @@
 from flask import Flask, render_template 
-from sqlalchemy import create_engine 
-from sqlalchemy.orm import sessionmaker 
-from scraper import NewsArticle
+from models import session, NewsArticle
 
 app = Flask(__name__) 
-
-# Set up connection to SQLite database "news.db"
-# Needs connection to query the database to display news articles on the site
-engine = create_engine('sqlite:///news.db')
-Session = sessionmaker(bind=engine)
-session = Session()
 
 # Root for homepage
 @app.route('/')
