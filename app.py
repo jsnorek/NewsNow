@@ -1,4 +1,4 @@
-from flask import Flask, render_template 
+from flask import Flask, render_template, request 
 from models import session, NewsArticle
 
 app = Flask(__name__) 
@@ -11,6 +11,16 @@ def index():
     news_articles = session.query(NewsArticle).all()
     # Returns rendered HTML template and passes news_articles to template as articles
     return render_template('index.html', articles=news_articles)
+
+# Route for search bar 
+@app.route('/search', methods = ['GET'])
+def search():
+    query = request.args.get('query', '')
+    if query:
+        results = session.query(NewsArticle).filter(NewsArticle.headline.contains(query)).all()
+    else:
+        results = []
+    return render_template('index.html', articles=results)
 
 if __name__ == "__main__":
     app.run(debug=True)
