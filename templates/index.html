@@ -15,15 +15,40 @@
 </head>
 <body>
     <form action="/search" method="GET">
-        <input type="text" name="query" placeholder="Search articles" required>
+        <input type="text" name="query" placeholder="Search articles">
         <button type="submit">Search</button>
     </form>
-    <h1>News Articles</h1>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <form action="/scrape" method="POST">
+        <button type="submit">Scrape Latest Articles</button>
+    </form>
+    <h1><a href="/" style="text-decoration: none; color: inherit;">News Articles</a></h1>
     {% for article in articles %}
     <div class="news-article">
         <h2><a href="{{ article.link }}" target="_blank">{{ article.headline }}</a></h2>
         <p>{{ article.summary }}</p>
+
+        <form action="/edit/{{ article.id }}" method="GET">
+            <button type="submit">Edit</button>
+        </form>
+
+        <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+            <button type="submit">Delete</button>
+        </form>
     </div>
     {% endfor %}
+    <h2>Add a New Article</h2>
+    <form action="{{ url_for('add_article') }}" method="post">
+        <label for="headline">Headline:</label>
+        <input type="text" id="headline" name="headline" required>
+        
+        <label for="summary">Summary:</label>
+        <textarea id="summary" name="summary"></textarea>
+
+        <label for="link">Link:</label>
+        <input type="url" id="link" name="link" required>
+
+        <button type="submit">Submit Article</button>
+    </form>
 </body>
 </html>
