@@ -1,0 +1,9 @@
+<!-- 'Add' form for creating new articles for the database-->
+
+<!-- Creating an HTML form that submits data to the /add route in app.py using the POST method -->
+<form action="/add" method="POST">
+    <input type="text" name="headline" placeholder="Headline" required>
+    <textarea name="summary" placeholder="Summary"></textarea>
+    <input type="url" name="link" placeholder="Article URL" required>
+    <button type="submit">Add Article</button>
+</form>

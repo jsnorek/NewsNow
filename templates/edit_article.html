@@ -1,0 +1,9 @@
+<!-- 'Edit' form for editing current articles in the database-->
+
+<!-- Creating an HTML form that edits existing data via the /edit/{{ article.id }} route in app.py using the POST method -->
+<form action="/edit/{{ article.id }}" method="POST">
+    <input type="text" name="headline" value="{{ article.headline }}" required>
+    <textarea name="summary">{{ article.summary }}</textarea>
+    <input type="url" name="link" value="{{ article.link }}" required>
+    <button type="submit">Save Changes</button>
+</form>

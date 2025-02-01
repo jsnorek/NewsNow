@@ -11,6 +11,9 @@ SCRAPE_URL = "https://www.npr.org/sections/news/"
 
 # Web scraping
 def scrape_news():
+    from models import session  # Ensure we're using the right session
+
+    session.expire_all() # Forces SQLAlchemy to fetch fresh data from the database
     # Persistent session object
     session_requests = login() # This reduces the number of new connections created and can help avoid triggering anti-bot mechanisms that detect frequent logins from the same IP
     if not session_requests:
@@ -60,7 +63,11 @@ def scrape_news():
             print(f"Scraped article: {headline}\nSummary: {summary}\nLink: {link}\n")  # Debugging statement
 
             # Save to the database if not already present
-            existing_article = session.query(NewsArticle).filter_by(headline=headline).first() # Querying the database to check if the article exists
+            # existing_article = session.query(NewsArticle).filter_by(headline=headline, link=link).first() # Querying the database to check if the article exists
+            existing_article = session.query(NewsArticle).filter(
+                NewsArticle.headline == headline,
+                NewsArticle.link == link
+            ).first()
             if not existing_article:
                 # Create new NewsArticle object for each article and add it to the session/database
                 news_item = NewsArticle(headline=headline, summary=summary, link=link) # Creating a new NewsArticle object
@@ -73,7 +80,6 @@ def scrape_news():
         
         # Saves all the changes to the database
         session.commit() # Committing the session to save the articles to the database
-        print("Scraping completed and saved to the database.")
     else:
         # Print error messages if request fails
         print(f"Failed to fetch news articles. Status Code: {response.status_code}") # Printing the status code if the request fails
