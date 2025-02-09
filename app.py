@@ -1,5 +1,8 @@
+# Routes
+
 from flask import Flask, redirect, render_template, request, url_for 
-from models import session, NewsArticle
+from models import Weather, session, NewsArticle
+from weather import get_weather
 
 app = Flask(__name__) 
 
@@ -15,8 +18,19 @@ def index():
     session.expire_all() # Ensures the session fetches fresh data
     # Queries NewsArticle table in the database to retrieve all records and stores in news_article variable as a list of NewsArticle objects 
     news_articles = session.query(NewsArticle).all()
+    # Fetch weather data
+    weather_data = session.query(Weather).first()
     # Returns rendered HTML template and passes news_articles to template as articles
-    return render_template('index.html', articles=news_articles)
+    return render_template('index.html', articles=news_articles, weather=weather_data)
+
+# Route to update the current weather
+@app.route('/update_weather', methods=['POST'])
+# Function to update the weather
+def update_weather():
+    # Call  get_weather to run API GET request
+    get_weather()
+    # Returns rendered HTML template 
+    return redirect(url_for('index'))
 
 # Route for search bar to allow users to search articles by headline
 @app.route('/search', methods = ['GET'])

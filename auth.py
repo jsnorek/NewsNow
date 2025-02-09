@@ -1,3 +1,5 @@
+# Authorization setup
+
 import os
 import requests
 

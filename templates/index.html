@@ -22,6 +22,19 @@
     <form action="/scrape" method="POST">
         <button type="submit">Scrape Latest Articles</button>
     </form>
+    <div class="weather-widget">
+        {% if weather %}
+        <p>{{weather.city}}</p>
+        <p>{{weather.temp}}°F</p>
+        <p>{{weather.description}}</p>
+        <p>{{weather.icon}}</p>
+        {% else %}
+        <p>Weather data unavailable</p>
+        {% endif %}
+        <form action="/update_weather" method="POST">
+            <button type="submit">Refresh Weather</button>
+        </form>
+    </div>
     <h1><a href="/" style="text-decoration: none; color: inherit;">News Articles</a></h1>
     {% for article in articles %}
     <div class="news-article">
