@@ -8,6 +8,8 @@ This is a simple web application that scrapes news articles and fetches weather 
 - Stores news and weather data in a SQLite database
 - Displays news alongside the latest weather information
 
+![ezgif com-optimize (5)](https://github.com/user-attachments/assets/662a6eba-e670-408d-a769-719dc3c8fd17)
+
 ## API Setup
 
 This weather app uses the OpenWeatherMap API to pull the current weather. The OpenWeatherMap API needed for this project is free to use if you sign up for a student account.
