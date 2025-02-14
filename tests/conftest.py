@@ -4,6 +4,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, NewsArticle, Weather
+from app import app
 
 # In-memory SQLite database for testing
 TEST_DATABASE_URL = "sqlite:///:memory:"

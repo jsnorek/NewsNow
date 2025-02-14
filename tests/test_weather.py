@@ -1,6 +1,8 @@
 import pytest
 from weather import get_weather
 from models import Weather
+from app import app
+from io import BytesIO
 
 def test_get_weather(test_session, monkeypatch): # monkeypatch is a pytest fixture that allows you to modify or replace parts of your system under test in a controlled manner
     from models import Weather

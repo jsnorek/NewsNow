@@ -1,5 +1,6 @@
 import pytest
 from scraper import scrape_news
+from app import app
 from models import NewsArticle, Base, engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timezone
