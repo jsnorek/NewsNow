@@ -21,6 +21,7 @@ class NewsArticle(Base): # New class that inherits from Base to map to database 
     headline = Column(String, nullable=False) # Defines column to store strings for article headlines
     summary = Column(String, nullable=True) # Defines column to store strings for summary of the articles
     link = Column(String, nullable=False) # Defines column to store strings for urls of the articles
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))  # Track updates
 
 # Define the Weather table
 class Weather(Base): # New class that inherits from Base to map to database table

@@ -11,9 +11,25 @@
         p { color: #555; }
         a { text-decoration: none; color: #0077cc; }
         a:hover { text-decoration: underline; }
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .alert-error { background-color: #f8d7da; color: #721c24; }
+        .alert-warning { background-color: #fff3cd; color: #856404; }
     </style>
 </head>
 <body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <form action="/search" method="GET">
         <input type="text" name="query" placeholder="Search articles">
         <button type="submit">Search</button>
@@ -63,5 +79,21 @@
 
         <button type="submit">Submit Article</button>
     </form>
+    <script>
+        // Wait for the page to load
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all flash messages
+            let alerts = document.querySelectorAll(".alert");
+    
+            // Set timeout to remove each alert after 5 seconds
+            alerts.forEach(function (alert) {
+                setTimeout(function () {
+                    alert.style.transition = "opacity 0.5s ease";
+                    alert.style.opacity = "0";
+                    setTimeout(() => alert.remove(), 500); // Remove element after fade-out
+                }, 5000); // 5000ms = 5 seconds
+            });
+        });
+    </script>
 </body>
 </html>
