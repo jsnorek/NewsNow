@@ -4,11 +4,14 @@ This is a simple web application that scrapes news articles and fetches weather 
 
 ## Features
 - Scrapes news articles from the web
+- Ability to search through articles
 - Fetches real-time weather data from OpenWeather API
 - Stores news and weather data in a SQLite database
 - Displays news alongside the latest weather information
+- Uses pagination to display 5 articles per page
 
-![ezgif com-optimize (5)](https://github.com/user-attachments/assets/662a6eba-e670-408d-a769-719dc3c8fd17)
+![ezgif com-optimize (6)](https://github.com/user-attachments/assets/de3e7dea-8abc-4308-b10c-810aa12a37eb)
+
 
 ## API Setup
 
@@ -41,3 +44,13 @@ python app.py
 ```
 
 And then use the link to open in your browser.
+
+### Example of database schema
+For Articles
+
+<img width="1103" alt="Screenshot 2025-02-21 at 11 17 46 AM" src="https://github.com/user-attachments/assets/653233ca-3a82-4fb8-906e-b76c181b8964" />
+
+For Weather
+
+<img width="377" alt="Screenshot 2025-02-21 at 11 18 41 AM" src="https://github.com/user-attachments/assets/1902430b-cf4b-478b-b62c-a99a7cc4e7ce" />
+
