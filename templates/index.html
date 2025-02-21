@@ -4,80 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Articles</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .news-article { border-bottom: 1px solid #ddd; padding: 20px 0; }
-        h2 { margin: 0; font-size: 24px; }
-        p { color: #555; }
-        a { text-decoration: none; color: #0077cc; }
-        a:hover { text-decoration: underline; }
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-        .alert-success { background-color: #d4edda; color: #155724; }
-        .alert-error { background-color: #f8d7da; color: #721c24; }
-        .alert-warning { background-color: #fff3cd; color: #856404; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
 </head>
-<body>
+<body class="font-sans bg-gray-50 p-10">
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">{{ message }}</div>
+                <div class="alert alert-{{ category }}" mb-4 p-3 rounded-md">
+                    <p class="font-semibold">{{ message }}</p>
+                </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <form action="/search" method="GET">
-        <input type="text" name="query" placeholder="Search articles">
-        <button type="submit">Search</button>
+
+    <!-- Search Bar -->
+    <form action="/search" method="GET" class="mb-6">
+        <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300"">
+        <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Search</button>
     </form>
+
+    <!-- Scrape Latest Articles Button -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <form action="/scrape" method="POST">
-        <button type="submit">Scrape Latest Articles</button>
+        <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Scrape Latest Articles</button>
     </form>
-    <div class="weather-widget">
+
+    <!-- Weather Widget -->
+    <div class="weather-widget my-6 p-4 bg-white shadow-md rounded-md">
         {% if weather %}
-        <p>{{weather.city}}</p>
-        <p>{{weather.temp}}°F</p>
-        <p>{{weather.description}}</p>
-        <p>{{weather.icon}}</p>
+            <p class="text-xl font-semibold">{{weather.city}}</p>
+            <p class="text-3xl font-bold">{{weather.temp}}°F</p>
+            <p>{{weather.description}}</p>
+            <p>{{weather.icon}}</p>
         {% else %}
-        <p>Weather data unavailable</p>
+            <p>Weather data unavailable</p>
         {% endif %}
         <form action="/update_weather" method="POST">
-            <button type="submit">Refresh Weather</button>
+            <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Refresh Weather</button>
         </form>
     </div>
-    <h1><a href="/" style="text-decoration: none; color: inherit;">News Articles</a></h1>
-    {% for article in articles %}
-    <div class="news-article">
-        <h2><a href="{{ article.link }}" target="_blank">{{ article.headline }}</a></h2>
-        <p>{{ article.summary }}</p>
 
-        <form action="/edit/{{ article.id }}" method="GET">
-            <button type="submit">Edit</button>
+    <!-- News Articles -->
+    <h1 class="text-4xl font-semibold mb-6"><a href="/" class="text-blue-300 hover:text-blue-400">News Articles</a></h1>
+    
+    {% for article in articles %}
+    <div class="news-article border-b border-gray-300 py-5">
+        <h2 class="text-xl font-semibold">
+            <a href="{{ article.link }}" target="_blank" class="text-black-600 hover:underline">{{ article.headline }}</a>
+        </h2>
+        <p class="text-gray-600">{{ article.summary }}</p>
+
+        <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+            <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
         </form>
 
         <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-            <button type="submit">Delete</button>
+            <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
         </form>
     </div>
     {% endfor %}
-    <h2>Add a New Article</h2>
-    <form action="{{ url_for('add_article') }}" method="post">
-        <label for="headline">Headline:</label>
-        <input type="text" id="headline" name="headline" required>
+
+    <!-- Pagination -->
+    <div class="pagination mt-6 text-center">
+        {% if page > 1 %}
+            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">First</a>
+            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Previous</a>
+        {% endif %}
         
-        <label for="summary">Summary:</label>
-        <textarea id="summary" name="summary"></textarea>
+        <span class="font-semibold text-gray-700 mx-4">Page {{ page }} of {{ total_pages }}</span>
+        
+        {% if page < total_pages %}
+            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Next</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Last</a>
+        {% endif %}
+    </div>
 
-        <label for="link">Link:</label>
-        <input type="url" id="link" name="link" required>
+    <!-- Add New Article Form -->
+    <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
+    <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
+        <div>
+            <label for="headline" class="block text-lg">Headline:</label>
+            <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
+        </div>
+        <div>
+            <label for="summary" class="block text-lg">Summary:</label>
+            <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+        </div>
+        <div>
+            <label for="link" class="block text-lg">Link:</label>
+            <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+        </div>
 
-        <button type="submit">Submit Article</button>
+        <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Submit Article</button>
     </form>
     <script>
         // Wait for the page to load

@@ -22,16 +22,27 @@ def refresh_session():
 def index():
     try:
         session.expire_all() # Ensures the session fetches fresh data
+        page = request.args.get('page', 1, type=int)
+        per_page = 5 # Number of articles per page
+
+        #Fetch paginated news articles
+        total_articles = session.query(NewsArticle).count()
+        total_pages = (total_articles + per_page - 1) // per_page # Calculate total pages
+
         # Queries NewsArticle table in the database to retrieve all records and stores in news_article variable as a list of NewsArticle objects 
-        news_articles = session.query(NewsArticle).all()
+        news_articles = session.query(NewsArticle).offset((page - 1) * per_page).limit(per_page).all()
+        
         # Fetch weather data
         weather_data = session.query(Weather).first()
         # Returns rendered HTML template and passes news_articles to template as articles
-        return render_template('index.html', articles=news_articles, weather=weather_data)
+        return render_template(
+            'index.html', articles=news_articles, weather=weather_data, 
+            page=page, total_articles=total_articles, per_page=per_page, total_pages=total_pages
+        )
     except Exception as e:
         logging.error(f"Error loading homepage: {e}")
         flash("An error occurred while loading the page. Please try again", "error")
-        return render_template('index.html', articles=[], weather=[])
+        return render_template('index.html', articles=[], weather=[], page=1, total_articles=0, per_page=5, total_pages=1)
 
 
 # Route to update the current weather
@@ -60,11 +71,24 @@ def search():
         else:
             results = [] # If no search term entered results is assigned empty list
             flash("Please enter a search term.", "warning")
-        return render_template('index.html', articles=results) # Renders index.html and passes results to the template for display
+        
+        # Fetch weather data so it's always available
+        weather_data = session.query(Weather).first()
+
+        # Ensure pagination variables are always passed, even for searches
+        total_articles = len(results)
+        per_page = 5 # Keep it consistent with the main page
+        total_pages = (total_articles + per_page - 1) // per_page
+        page = 1 # Default to the first page when searching 
+
+        # Renders index.html and passes results to the template for display
+        return render_template('index.html', articles=results, weather=weather_data, 
+                                page=page, total_articles=total_articles, 
+                                per_page=per_page, total_pages=total_pages) 
     except Exception as e:
         logging.error(f"Error searching articles: {e}")
         flash("An error occurred during search. Please try again.", "error")
-        return render_template('index.html', articles=[])
+        return render_template('index.html', articles=[], page=1, total_articles=0, per_page=5, total_pages=1)
     
 # Route to re-scrape for updated articlees
 @app.route('/scrape', methods = ['POST'])
