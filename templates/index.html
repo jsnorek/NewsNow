@@ -19,6 +19,29 @@
         .alert-success { background-color: #d4edda; color: #155724; }
         .alert-error { background-color: #f8d7da; color: #721c24; }
         .alert-warning { background-color: #fff3cd; color: #856404; }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            padding: 10px 15px;
+            margin: 5px;
+            text-decoration: none;
+            background-color: #0077cc;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #005fa3;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +89,19 @@
         </form>
     </div>
     {% endfor %}
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('index', page=1 )}}" class="first">First</a>
+            <a href="{{ url_for('index', page=page-1) }}" class="prev">Previous</a>
+        {% endif %}
+        
+        <span>Page {{ page }} of {{ total_pages }}</span>
+        
+        {% if page < total_pages %}
+            <a href="{{ url_for('index', page=page+1) }}" class="next">Next</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="last">Last</a>
+        {% endif %}
+    </div>
     <h2>Add a New Article</h2>
     <form action="{{ url_for('add_article') }}" method="post">
         <label for="headline">Headline:</label>
