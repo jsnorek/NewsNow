@@ -22,15 +22,15 @@ def refresh_session():
 def index():
     try:
         session.expire_all() # Ensures the session fetches fresh data
-        page = request.args.get('page', 1, type=int)
+        page = request.args.get('page', 1, type=int) # Retrieves the page query parameter from the URL
         per_page = 5 # Number of articles per page
 
         #Fetch paginated news articles
-        total_articles = session.query(NewsArticle).count()
-        total_pages = (total_articles + per_page - 1) // per_page # Calculate total pages
+        total_articles = session.query(NewsArticle).count() # Counts all articles
+        total_pages = (total_articles + per_page - 1) // per_page # Calculate total pages and round up when needed
 
-        # Queries NewsArticle table in the database to retrieve all records and stores in news_article variable as a list of NewsArticle objects 
-        news_articles = session.query(NewsArticle).offset((page - 1) * per_page).limit(per_page).all()
+        # Queries NewsArticle table in the database to retrieve subset of records and stores in news_article variable as a list of NewsArticle objects 
+        news_articles = session.query(NewsArticle).offset((page - 1) * per_page).limit(per_page).all() # Offset skips the articles that appear on previous page and limit fetches the 5 per page
         
         # Fetch weather data
         weather_data = session.query(Weather).first()
