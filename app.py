@@ -1,12 +1,17 @@
 # Routes
 
+import io
 import os
 import shutil
-from flask import Flask, redirect, render_template, request, url_for, flash 
+from flask import Flask, Response, redirect, render_template, request, url_for, flash 
 from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle
 from weather import get_weather
 import logging
 from models import search_articles
+import matplotlib.pyplot as plt
+import base64
+import matplotlib
+matplotlib.use('Agg') 
 
 app = Flask(__name__) 
 app.secret_key = 'secret'
@@ -228,5 +233,41 @@ def reindex():
     print("Reindexing completed.")
     return redirect(url_for('index'))
 
+@app.route('/weather_chart')
+def weather_chart():
+    try:
+        # Query weather data
+        weather_entries = session.query(Weather).order_by(Weather.last_updated).all()
+
+        if not weather_entries:
+            return "No weather data available.", 404
+
+        # Extract data
+        dates = [entry.last_updated for entry in weather_entries]
+        temps = [entry.temp for entry in weather_entries]
+
+        # Create a plot
+        plt.figure(figsize=(8, 4))
+        plt.plot(dates, temps, marker='o', linestyle='-', color='b', label='Temperature')
+        plt.xlabel('Date')
+        plt.ylabel('Temperature (°C)')
+        plt.title('Weather Temperature Trends for Sonoma')
+        plt.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+
+        # Save plot to a buffer
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        img.seek(0)
+        plt.close()  # Close the plot to free memory
+
+        # Return the image as a response
+        return Response(img.getvalue(), mimetype='image/png')
+
+    except Exception as e:
+        print(f"Error generating weather chart: {e}")
+        return "Failed to generate weather chart.", 500
+    
 if __name__ == "__main__":
     app.run(debug=True)
