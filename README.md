@@ -13,6 +13,9 @@ This is a simple web application that scrapes news articles and fetches weather 
 
 ![ezgif com-optimize (6)](https://github.com/user-attachments/assets/de3e7dea-8abc-4308-b10c-810aa12a37eb)
 
+**New search queries options and data chart**
+![Screenshot 2025-02-28 at 9 12 53 AM](https://github.com/user-attachments/assets/f1564279-cacf-4ab9-90cd-3c211b703844)
+
 
 ## API Setup
 
