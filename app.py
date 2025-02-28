@@ -1,9 +1,12 @@
 # Routes
 
+import os
+import shutil
 from flask import Flask, redirect, render_template, request, url_for, flash 
-from models import Weather, session, NewsArticle
+from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle
 from weather import get_weather
 import logging
+from models import search_articles
 
 app = Flask(__name__) 
 app.secret_key = 'secret'
@@ -63,9 +66,18 @@ def update_weather():
 @app.route('/search', methods = ['GET'])
 def search():
     query = request.args.get('query', '') # Retrieves the value of the query parameter named 'query' from the request. Default is an empty string
+    search_type = request.args.get('search_type', 'headline_summary')  # Retrieves the selected search type (default: 'headline_summary')
     try:
         if query: # If search term was entered
-            results = session.query(NewsArticle).filter(NewsArticle.headline.contains(query)).all() # If search term entered, it queries the database for NewsArticle entries where headling contains the search term
+            
+            # Call the appropriate search function based on the search type selected
+            if search_type == 'headline_summary':
+                results = search_articles_complex_1(query)  # Search across headline & summary
+            elif search_type == 'wildcard_phrase':
+                results = search_articles_complex_2(query)  # Search with wildcards or phrase
+            else:
+                results = []
+                flash("Invalid search type selected.", "error")
             if not results:
                 flash("No articles found for your search.", "info")
         else:
@@ -98,7 +110,12 @@ def scrape():
         session.commit() # Commits pending transactions to the database to ensure the session is clean
 
         from scraper import scrape_news # Imports scrape_news
-        scrape_news() # Calls scrape_news functoin to re-scrape for articles
+        # scrape_news() # Calls scrape_news function to re-scrape for articles
+        scraped_articles = scrape_news()
+
+        for article in scraped_articles:
+            add_article_to_index(article)  # Add each scraped article to the Whoosh index
+
         flash("Yay! News articles updated successfully!", "success")
         # session.expire_all()
         # session.commit() # Ensures the database updates before redirecting
@@ -126,6 +143,9 @@ def add_article():
             new_article = NewsArticle(headline=headline, summary=summary, link=link)
             session.add(new_article) # Adds the new article to the database session
             session.commit() # Commits the session to save the new article to the database
+            
+            # Add the new article to the Whoosh index
+            add_article_to_index(new_article)
             
             flash("Article added successfully!", "success")
             return redirect(url_for('index')) # Redirect to the homepage
@@ -180,6 +200,33 @@ def delete_article(id):
         logging.error(f"Error deleting article {id}: {e}")
         flash("An error occurred while deleting the article. Please try again.", "error")
     return redirect(url_for('index')) # Redirects to the homepage
+
+@app.route('/reindex', methods=['GET'])
+def reindex():
+    index_dir = "indexdir"
+
+    # Delete the index directory to remove duplicates
+    if os.path.exists(index_dir):
+        shutil.rmtree(index_dir)
+        print("Index deleted.")
+
+    # Recreate the index
+    ix = create_or_open_index()  
+    writer = ix.writer()
+
+    # Add fresh articles to the index
+    articles = session.query(NewsArticle).all()
+    for article in articles:
+        writer.add_document(
+            id=str(article.id),
+            headline=article.headline,
+            summary=article.summary or '',
+            link=article.link
+        )
+
+    writer.commit()
+    print("Reindexing completed.")
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)
