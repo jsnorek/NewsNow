@@ -2,7 +2,7 @@
 
 import requests
 import logging
-from config import WEATHER_API_KEY, DEFAULT_CITY
+# from config import WEATHER_API_KEY, DEFAULT_CITY
 from models import Weather, session 
 from datetime import datetime, timezone
 from requests.exceptions import RequestException
@@ -11,6 +11,7 @@ from requests.exceptions import RequestException
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def get_weather():
+    from config import WEATHER_API_KEY, DEFAULT_CITY
     # Define the API endpoint URL
     url = f"http://api.openweathermap.org/data/2.5/weather?q={DEFAULT_CITY}&appid={WEATHER_API_KEY}&units=imperial" # use DEFAULT_CITY and WEATHER_API_KEY from config file
     try:

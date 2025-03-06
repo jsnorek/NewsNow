@@ -12,9 +12,15 @@ import matplotlib.pyplot as plt
 import base64
 import matplotlib
 matplotlib.use('Agg') 
+from config import Config
 
 app = Flask(__name__) 
 app.secret_key = 'secret'
+
+
+app.config["DATABASE_URL"] = Config.DATABASE_URL
+app.config["NEWS_SITE_USERNAME"] = Config.NEWS_SITE_USERNAME
+app.config["NEWS_SITE_PASSWORD"] = Config.NEWS_SITE_PASSWORD
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
