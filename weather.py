@@ -11,9 +11,9 @@ from requests.exceptions import RequestException
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def get_weather():
-    from config import WEATHER_API_KEY, DEFAULT_CITY
+    from config import Config
     # Define the API endpoint URL
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={DEFAULT_CITY}&appid={WEATHER_API_KEY}&units=imperial" # use DEFAULT_CITY and WEATHER_API_KEY from config file
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={Config.DEFAULT_CITY}&appid={Config.WEATHER_API_KEY}&units=imperial"
     try:
         # Send GET request to the endpoint URL
         response = requests.get(url, timeout=10)
