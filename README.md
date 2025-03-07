@@ -32,17 +32,32 @@ git clone git@github.com:jsnorek/e-commerce-product-aggregator.git
 cd e-commerce-product-aggregator
 ```
 
-2. Install dependencies
+1. Install dependencies
 ```
-pip install flask sqlalchemy requests
+pip install -r requirements.txt
 ```
 
-3. Set up database
+2. Set up database
 ```
 python -c "from models import Base, engine; Base.metadata.create_all(engine)"
 ```
 
+3. Set up environment variables
+   - Create a .env file in the root of the project
+   - Add the following values to the .env file
+```
+FLASK_ENV=development
+DATABASE_URL=your_database_url
+NEWS_SITE_USERNAME=your_login_email
+NEWS_SITE_PASSWORD=your_login_password
+WEATHER_API_KEY=your_weather_api_key
+```
+
+**Sign up for an account on** [npr.org](https://www.npr.org/login) to get your NEWS_SITE_USERNAME and NEWS_SITE_PASSWORD. These credentials are used to scrape news articles from the site.
+	•	Make sure to replace your_npr_username, your_npr_password, and your_weather_api_key with your actual credentials and API key.
+
 4. Initialize the Whoosh Search Index
+
 Before using the search functionality, create the search index
 ```
 python -c "from models import 
@@ -78,6 +93,23 @@ http://127.0.0.1:5000/weather_chart
 
 It displays a time-series plot of recorded temperatures.
 This also displays on the main app homepage.
+
+## Deployment Process
+This application is deployed on Render at this [site](https://e-commerce-product-aggregator.onrender.com/)
+
+The deployment process includes:
+
+1. Pushing changes to GitHub, triggering an automatic deployment on Render
+2. Setting environment variables in the Render dashboard
+3. Ensuring dependencies are included in `requirements.txt` for Render to install
+4. Ensuring your config.py file is set up correctly to distinguish between production and local development
+
+## Learnings from Building this Application
+- Deepened understanding of handling API calls, forms, and session management
+- Practiced database management including structuring and querying a database
+- Implemented Whoosh full-text search functionalities for advanced searching
+- Learned to create simple but effective data visualization
+- Practiced deployment with Render
 
 ### Example of database schema
 For Articles
