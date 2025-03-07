@@ -3,7 +3,8 @@
 # from ast import Or
 from sqlalchemy import DateTime, Float, create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
-from config import DATABASE_URL, DEFAULT_CITY
+# from config import DATABASE_URL, DEFAULT_CITY
+from config import Config
 import os
 from datetime import datetime, timezone
 
@@ -15,7 +16,7 @@ from whoosh.qparser import QueryParser, MultifieldParser, OrGroup
 print(f"Database path: {os.path.abspath('news.db')}")
 
 # Set up the database connection
-engine = create_engine(DATABASE_URL)
+engine = create_engine(Config.DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
@@ -34,7 +35,7 @@ class Weather(Base): # New class that inherits from Base to map to database tabl
     __tablename__ = 'weather' # Specifies name of database table
     id = Column(Integer, primary_key=True) # Defines column named id which is an integer and primary key
     temp = Column(Float, nullable=False) # Defines column named temp
-    city = Column(String, nullable=False, default=DEFAULT_CITY) # Defines column named city and the default is DEFAULT_CITY
+    city = Column(String, nullable=False, default=Config.DEFAULT_CITY) # Defines column named city and the default is DEFAULT_CITY
     description = Column(String, nullable=False) # Defines column named description
     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc)) # Defines column named last_updated using a callable lambda function to dynamically assign a default value determined at runtime
 
