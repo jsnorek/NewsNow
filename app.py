@@ -3,8 +3,9 @@
 import io
 import os
 import shutil
-from flask import Flask, Response, redirect, render_template, request, url_for, flash 
+from flask import Flask, Response, jsonify, redirect, render_template, request, url_for, flash 
 from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle
+from tests.sentiment_and_summary import get_sentiment_and_summary
 from weather import get_weather
 import logging
 from models import search_articles
@@ -275,5 +276,25 @@ def weather_chart():
         print(f"Error generating weather chart: {e}")
         return "Failed to generate weather chart.", 500
     
+@app.route('/api/sentiment-and-summary', methods=['POST'])
+def sentiment_and_summary():
+    data = request.get_json()
+    article_title = data.get('title')
+    article_content = data.get('content')
+
+    try:
+        result = get_sentiment_and_summary(article_title, article_content)
+
+        if result["summary"] and result["sentiment"]:
+            return jsonify({
+                "summary": result["summary"],
+                "sentiment": result["sentiment"]
+            })
+        else:
+            return jsonify({"error": "Incomplete AI response"}), 500
+    except Exception as e:
+        print(f"Error generating sentiment and summary: {e}")
+        return jsonify({"error": "Internal server error"}), 500
+
 if __name__ == "__main__":
     app.run(debug=True)
