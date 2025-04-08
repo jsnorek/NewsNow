@@ -72,6 +72,16 @@
         <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
             <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
         </form>
+        <!-- Sentiment & Summary Button -->
+        <button 
+          onclick="getSentimentAndSummary('{{ article.headline }}', '{{ article.summary }}', {{ article.id }})" 
+          class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
+        >
+          Get Sentiment & Summary
+        </button>
+
+        <p id="sentiment-{{ article.id }}" class="mt-2 text-gray-700"></p>
+        <p id="summary-{{ article.id }}" class="mt-2 text-gray-700"></p>
     </div>
     {% endfor %}
 
@@ -108,7 +118,32 @@
 
         <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Submit Article</button>
     </form>
+
     <script>
+        async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
+            try {
+                const response = await fetch('/api/sentiment-and-summary', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: articleTitle, content: articleContent })
+                });
+                
+                const data = await response.json();
+                
+                if (data.sentiment && data.summary) {
+                    document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
+                    document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+                } else {
+                    document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
+                    document.getElementById(`summary-${articleId}`).innerText = "Error fetching summary";
+                }
+            } catch (error) {
+                console.error("Error fetching sentiment and summary:", error);
+            }
+        }
+
         // Wait for the page to load
         document.addEventListener("DOMContentLoaded", function () {
             // Select all flash messages
