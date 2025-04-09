@@ -64,7 +64,12 @@
     <h1 class="text-4xl font-semibold mb-6"><a href="/" class="text-blue-300 hover:text-blue-400">News Articles</a></h1>
     
     {% for article in articles %}
-    <div class="news-article border-b border-gray-300 py-5">
+    <div class="news-article article border-b border-gray-300 py-5"
+        data-id="{{ article.id }}"
+        data-title="{{ article.headline | escape }}"
+        data-content="{{ article.summary | escape }}"
+    >
+
         <h2 class="text-xl font-semibold">
             <a href="{{ article.link }}" target="_blank" class="text-black-600 hover:underline">{{ article.headline }}</a>
         </h2>
@@ -134,6 +139,41 @@
     </form>
 
     <script>
+        async function analyzeVisibleArticles() {
+            const articles = document.querySelectorAll('.article');
+
+            for (const article of articles) {
+                const articleId = article.dataset.id;
+                const title = article.dataset.title;
+                const content = article.dataset.content;
+
+                try {
+                    const response = await fetch('/api/sentiment-and-summary', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            title: title,
+                            content: content
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.sentiment) {
+                        document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
+                    }
+
+                    if (data.summary) {
+                        document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+                    }
+                } catch (error) {
+                    console.error(`Error analyzing article ID ${articleId}:`, error);
+                }
+            }
+        };
+        
         async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
             try {
                 const response = await fetch('/api/sentiment-and-summary', {
