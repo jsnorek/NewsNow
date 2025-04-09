@@ -68,8 +68,10 @@
     </form>
 </section>
 
-    <!-- Scrape Latest Articles Button -->
+    <!-- Article Action Buttons -->
     <section class="flex flex-wrap gap-4 mb-8">
+
+        <!-- Scrape Latest Articles Button -->
         <script src="{{ url_for('static', filename='script.js') }}"></script>
         <form action="/scrape" method="POST">
             <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Scrape Latest Articles</button>
@@ -79,6 +81,7 @@
         <button onclick="analyzeVisibleArticles()" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">
             Analyze Visible Articles
         </button>
+        
     </section>
 
     <!-- Weather Widget -->
