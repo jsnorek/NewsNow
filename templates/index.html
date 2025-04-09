@@ -4,9 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Articles</title>
+
+    <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8D818C',
+                        secondary: '#E8F5E9',
+                        accent: '#8390FA',
+                        background: '#F6F8FA',
+                        text: '#333333',
+                    },
+                    fontFamily: {
+                        body: ['Roboto', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans bg-gray-50 p-10">
+<body class="bg-background text-text font-body p-10">
+    <!-- Force Tailwind CDN to include custom classes -->
+    <div class="hidden">
+    bg-background text-text font-body font-heading
+    bg-primary text-primary border-primary
+    bg-secondary text-secondary border-secondary
+    bg-accent text-accent
+    hover:bg-[#7B6E7B] active:bg-[#6E616E]
+    hover:bg-[#F3E8F4] active:bg-[#E1D1E2]
+    hover:text-[#6B75F2] active:text-[#5662E2]
+    </div>
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
