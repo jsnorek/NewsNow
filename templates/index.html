@@ -28,7 +28,8 @@
     </script>
 
     <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+
 </head>
 <body class="bg-background text-text font-body p-10">
     <!-- Force Tailwind CDN to include custom classes -->
@@ -53,17 +54,19 @@
     {% endwith %}
 
     <!-- Search Bar -->
-<form action="/search" method="GET" class="mb-6">
-    <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300" required>
-    
-    <label for="search_type" class="ml-2">Search Type:</label>
-    <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
-        <option value="headline_summary">Search in Headline & Summary</option>
-        <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
-    </select>
-    
-    <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Search</button>
-</form>
+<section class="mb-8">
+    <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
+        <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
+        
+        <label for="search_type" class="ml-2">Search Type:</label>
+        <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
+            <option value="headline_summary">Search in Headline & Summary</option>
+            <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
+        </select>
+        
+        <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
+    </form>
+</section>
 
     <!-- Scrape Latest Articles Button -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
