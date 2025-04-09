@@ -69,7 +69,6 @@
         data-title="{{ article.headline | escape }}"
         data-content="{{ article.summary | escape }}"
     >
-
         <h2 class="text-xl font-semibold">
             <a href="{{ article.link }}" target="_blank" class="text-black-600 hover:underline">{{ article.headline }}</a>
         </h2>
@@ -89,14 +88,6 @@
             class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
         >
             Get Summary
-        </button>
-
-        <!-- Sentiment & Summary Button -->
-        <button 
-            onclick="getSentimentAndSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)" 
-            class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
-        >
-            Get Sentiment & Summary
         </button>
 
         <p id="sentiment-{{ article.id }}" class="mt-2 text-gray-700"></p>
