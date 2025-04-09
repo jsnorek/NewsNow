@@ -173,8 +173,10 @@
             }
         };
         
+        // Fetch both sentiment and summary for a single article
         async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
             try {
+                // Send a POST request to the sentiment + summary endpoint
                 const response = await fetch('/api/sentiment-and-summary', {
                     method: 'POST',
                     headers: {
@@ -183,8 +185,10 @@
                     body: JSON.stringify({ title: articleTitle, content: articleContent })
                 });
                 
+                // Parse the JSON response
                 const data = await response.json();
                 
+                // Update the page with the response from the backend
                 if (data.sentiment && data.summary) {
                     document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
                     document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
