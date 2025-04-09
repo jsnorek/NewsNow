@@ -184,7 +184,7 @@
                     },
                     body: JSON.stringify({ title: articleTitle, content: articleContent })
                 });
-                
+
                 // Parse the JSON response
                 const data = await response.json();
                 
@@ -201,8 +201,10 @@
             }
         };
 
+        // Fetch only the AI-generated summary for a single article
         async function getSummary(articleTitle, articleContent, articleId) {
             try {
+                // Send a POST request to the summary endpoint
                 const response = await fetch('api/summary', {
                     method: 'POST',
                     headers: {
@@ -211,8 +213,10 @@
                     body: JSON.stringify({ title: articleTitle, content: articleContent})
                 });
 
+                // Parse the JSON response
                 const data = await response.json();
 
+                // Update the summary section of the corresponding article
                 if(data.summary) {
                     document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
                 } else {
