@@ -4,11 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_summary(title, content):
+    # Combine the title and content into a single string
     text = f"{title}\n\n{content}"
 
+    # Construct the prompt
     prompt = f"""
     Analyze the following news article and provide:
     1. A brief 1 sentence summary
@@ -20,6 +23,7 @@ def get_summary(title, content):
     Summary: ...
     """
 
+    # Make the API call
     response = client.chat.completions.create(
         model="gpt-4o",  
         messages=[
@@ -29,8 +33,10 @@ def get_summary(title, content):
         temperature=0.7,
     )
 
+    # Extract the AI's response
     content = response.choices[0].message.content
 
+    # Parse the summary and sentiment
     summary = ""
     
     for line in content.splitlines():
