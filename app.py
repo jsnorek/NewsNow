@@ -6,6 +6,7 @@ import shutil
 from flask import Flask, Response, jsonify, redirect, render_template, request, url_for, flash 
 from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle
 from tests.sentiment_and_summary import get_sentiment_and_summary
+from tests.summary import get_summary
 from weather import get_weather
 import logging
 from models import search_articles
@@ -294,6 +295,23 @@ def sentiment_and_summary():
             return jsonify({"error": "Incomplete AI response"}), 500
     except Exception as e:
         print(f"Error generating sentiment and summary: {e}")
+        return jsonify({"error": "Internal server error"}), 500
+    
+@app.route('/api/summary', methods=['POST'])
+def summary():
+    data = request.get_json()
+    article_title = data.get('title')
+    article_content = data.get('content')
+
+    try:
+        result = get_summary(article_title, article_content)
+
+        if result:
+            return jsonify({"summary": result})
+        else:
+            return jsonify({"error": "Incomplete AI response"}), 500
+    except Exception as e:
+        print(f"Error generating summary: {e}")
         return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == "__main__":
