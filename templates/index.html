@@ -72,9 +72,18 @@
         <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
             <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
         </form>
+
+        <!-- Summary Button -->
+        <button 
+            onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
+            class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
+        >
+            Get Summary
+        </button>
+
         <!-- Sentiment & Summary Button -->
         <button 
-            onclick="getSentimentAndSummary('{{ article.headline }}', '{{ article.summary }}', {{ article.id }})" 
+            onclick="getSentimentAndSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)" 
             class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
         >
             Get Sentiment & Summary
@@ -142,7 +151,29 @@
             } catch (error) {
                 console.error("Error fetching sentiment and summary:", error);
             }
-        }
+        };
+
+        async function getSummary(articleTitle, articleContent, articleId) {
+            try {
+                const response = await fetch('api/summary', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: articleTitle, content: articleContent})
+                });
+
+                const data = await response.json();
+
+                if(data.summary) {
+                    document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+                } else {
+                    document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
+                }
+            } catch (error) {
+                console.error("Error fetching summary:", error)
+            }
+        };
 
         // Wait for the page to load
         document.addEventListener("DOMContentLoaded", function () {
