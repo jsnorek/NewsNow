@@ -130,15 +130,21 @@
     </form>
 
     <script>
+        // Analyze all visible articles on the page by sending their title and content
+        // to the backend for sentiment + summary generation.
         async function analyzeVisibleArticles() {
+            // Select all elements with the class 'article'
             const articles = document.querySelectorAll('.article');
-
+            
+            // Loop through each article element
             for (const article of articles) {
+                // Extract the article's ID, title, and content from its data attributes
                 const articleId = article.dataset.id;
                 const title = article.dataset.title;
                 const content = article.dataset.content;
 
                 try {
+                    // Send a POST request to the backend API with the article info
                     const response = await fetch('/api/sentiment-and-summary', {
                         method: 'POST',
                         headers: {
@@ -150,8 +156,10 @@
                         })
                     });
 
+                    // Parse the JSON response
                     const data = await response.json();
 
+                    // Display the sentiment and summary in the page using the article ID
                     if (data.sentiment) {
                         document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
                     }
