@@ -141,13 +141,13 @@
     {% endfor %}
 
     <!-- Pagination -->
-    <div class="pagination mt-6 text-center">
+    <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
         {% if page > 1 %}
             <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">First</a>
             <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Previous</a>
         {% endif %}
         
-        <span class="font-semibold text-gray-700 mx-4">Page {{ page }} of {{ total_pages }}</span>
+        <span class="font-semibold text-white mx-4">Page {{ page }} of {{ total_pages }}</span>
         
         {% if page < total_pages %}
             <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Next</a>
