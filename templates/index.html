@@ -116,18 +116,20 @@
         </h2>
         <p class="text-text">{{ article.summary }}</p>
 
-        <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-            <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
-        </form>
+        <section class="flex flex-wrap gap-4 mb-8"> 
+            <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+                <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
+            </form>
 
-        <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-            <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
-        </form>
+            <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
+            </form>
+        </section>
 
         <!-- Summary Button -->
         <button 
             onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
-            class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+            class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
         >
             Get Summary
         </button>
