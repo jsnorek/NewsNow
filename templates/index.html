@@ -119,7 +119,7 @@
 
         <section class="flex flex-wrap gap-4 mb-8"> 
             <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-                <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
+                <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
             </form>
 
             <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
