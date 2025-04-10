@@ -85,17 +85,17 @@
     </section>
 
     <!-- Weather Widget -->
-    <div class="weather-widget my-6 p-4 bg-white shadow-md rounded-md">
+    <div class="weather-widget my-6 p-4 bg-accent shadow-md rounded-md">
         {% if weather %}
-            <p class="text-xl font-semibold">{{weather.city}}</p>
-            <p class="text-3xl font-bold">{{weather.temp}}°F</p>
-            <p>{{weather.description}}</p>
+            <p class="text-xl text-background font-semibold">{{weather.city}}</p>
+            <p class="text-3xl text-background font-bold">{{weather.temp}}°F</p>
+            <p class="text-background">{{weather.description}}</p>
             <p>{{weather.icon}}</p>
         {% else %}
             <p>Weather data unavailable</p>
         {% endif %}
         <form action="/update_weather" method="POST">
-            <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Refresh Weather</button>
+            <button type="submit" class="bg-secondary text-text py-1 px-3 rounded-md hover:bg-[#D6EDD8] transition-all">Refresh Weather</button>
         </form>
     </div>
 
