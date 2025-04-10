@@ -46,8 +46,8 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" mb-4 p-3 rounded-md">
-                    <p class="font-semibold">{{ message }}</p>
+                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#ff7a7a]">
+                    <p class="font-semibold text-white">{{ message }}</p>
                 </div>
             {% endfor %}
         {% endif %}
