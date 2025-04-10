@@ -54,19 +54,20 @@
     {% endwith %}
 
     <!-- Search Bar -->
-<section class="mb-8">
-    <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
-        <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
-        
-        <label for="search_type" class="ml-2">Search Type:</label>
-        <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
-            <option value="headline_summary">Search in Headline & Summary</option>
-            <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
-        </select>
-        
-        <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
-    </form>
-</section>
+    <section class="mb-8">
+        <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
+            <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-32 h-32">
+            <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
+            
+            <label for="search_type" class="ml-2">Search Type:</label>
+            <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
+                <option value="headline_summary">Search in Headline & Summary</option>
+                <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
+            </select>
+            
+            <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
+        </form>
+    </section>
 
     <!-- Article Action Buttons -->
     <section class="flex flex-wrap gap-4 mb-8">
