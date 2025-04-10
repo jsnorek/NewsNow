@@ -96,7 +96,7 @@
             <p>Weather data unavailable</p>
         {% endif %}
         <form action="/update_weather" method="POST">
-            <button type="submit" class="bg-secondary text-text py-1 px-3 rounded-md hover:bg-[#D6EDD8] transition-all">Refresh Weather</button>
+            <button type="submit" class="bg-secondary text-text py-1 px-3 rounded-md hover:bg-[#f5fbf6] transition-all">Refresh Weather</button>
         </form>
     </div>
 
@@ -143,15 +143,15 @@
     <!-- Pagination -->
     <div class="pagination mt-6 text-center">
         {% if page > 1 %}
-            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">First</a>
-            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Previous</a>
+            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">First</a>
+            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Previous</a>
         {% endif %}
         
         <span class="font-semibold text-gray-700 mx-4">Page {{ page }} of {{ total_pages }}</span>
         
         {% if page < total_pages %}
-            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Next</a>
-            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Last</a>
+            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Next</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Last</a>
         {% endif %}
     </div>
 
