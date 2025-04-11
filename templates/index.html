@@ -158,23 +158,25 @@
     </div>
 
     <!-- Add New Article Form -->
-    <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
-    <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
-        <div>
-            <label for="headline" class="block text-lg">Headline:</label>
-            <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
-        <div>
-            <label for="summary" class="block text-lg">Summary:</label>
-            <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
-        </div>
-        <div>
-            <label for="link" class="block text-lg">Link:</label>
-            <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
+    <div>
+        <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
+        <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
+            <div>
+                <label for="headline" class="block text-lg">Headline:</label>
+                <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="summary" class="block text-lg">Summary:</label>
+                <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="link" class="block text-lg">Link:</label>
+                <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
 
-        <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
-    </form>
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
+        </form>
+    </div>
 
     <script>
         // Analyze all visible articles on the page by sending their title and content
