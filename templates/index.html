@@ -4,46 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Articles</title>
+
+    <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5F4F5C',
+                        secondary: '#E8F5E9',
+                        accent: '#5869E4',
+                        background: '#F6F8FA',
+                        text: '#333333',
+                    },
+                    fontFamily: {
+                        body: ['Roboto', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+
 </head>
-<body class="font-sans bg-gray-50 p-10">
+<body class="bg-background text-text font-body p-10">
+    <!-- Force Tailwind CDN to include custom classes -->
+    <div class="hidden">
+    bg-background text-text font-body font-heading
+    bg-primary text-primary border-primary
+    bg-secondary text-secondary border-secondary
+    bg-accent text-accent
+    hover:bg-[#7B6E7B] active:bg-[#6E616E]
+    hover:bg-[#F3E8F4] active:bg-[#E1D1E2]
+    hover:text-[#6B75F2] active:text-[#5662E2]
+    </div>
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" mb-4 p-3 rounded-md">
-                    <p class="font-semibold">{{ message }}</p>
+                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#ff7a7a]">
+                    <p class="font-semibold text-white">{{ message }}</p>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
     <!-- Search Bar -->
-<form action="/search" method="GET" class="mb-6">
-    <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300" required>
-    
-    <label for="search_type" class="ml-2">Search Type:</label>
-    <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
-        <option value="headline_summary">Search in Headline & Summary</option>
-        <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
-    </select>
-    
-    <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Search</button>
-</form>
+    <section class="mb-8">
+        <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
+            <a href="/">
+                <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-32 h-32">
+            </a>
+            <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
+            
+            <label for="search_type" class="ml-2">Search Type:</label>
+            <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
+                <option value="headline_summary">Search in Headline & Summary</option>
+                <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
+            </select>
+            
+            <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
+        </form>
+    </section>
 
-    <!-- Scrape Latest Articles Button -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <form action="/scrape" method="POST">
-        <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Scrape Latest Articles</button>
-    </form>
+    <!-- Article Action Buttons -->
+    <section class="flex flex-wrap gap-4 mb-8">
 
-    <!-- Setiment and Summary  -->
-    <button onclick="analyzeVisibleArticles()" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">
-        Analyze Visible Articles
-    </button>
+        <!-- Scrape Latest Articles Button -->
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <form action="/scrape" method="POST">
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Scrape Latest Articles</button>
+        </form>
+
+        <!-- Setiment and Summary  -->
+        <button onclick="analyzeVisibleArticles()" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">
+            Analyze Visible Articles
+        </button>
+
+    </section>
 
     <!-- Weather Widget -->
-    <div class="weather-widget my-6 p-4 bg-white shadow-md rounded-md">
+    <div class="weather-widget my-6 p-4 bg-accent text-white shadow-md rounded-md">
         {% if weather %}
             <p class="text-xl font-semibold">{{weather.city}}</p>
             <p class="text-3xl font-bold">{{weather.temp}}°F</p>
@@ -53,15 +98,15 @@
             <p>Weather data unavailable</p>
         {% endif %}
         <form action="/update_weather" method="POST">
-            <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Refresh Weather</button>
+            <button type="submit" class="bg-secondary text-text py-1 px-3 rounded-md hover:bg-[#f5fbf6] transition-all">Refresh Weather</button>
         </form>
     </div>
 
     <!-- Weather Data Chart -->
-    <img src="{{ url_for('weather_chart') }}" alt="Weather Data Chart">
+    <!-- <img src="{{ url_for('weather_chart') }}" alt="Weather Data Chart"> -->
 
     <!-- News Articles -->
-    <h1 class="text-4xl font-semibold mb-6"><a href="/" class="text-blue-300 hover:text-blue-400">News Articles</a></h1>
+    <h1 class="text-4xl font-semibold mb-6"><a href="/" class="text-accent hover:text-primary">News Articles</a></h1>
     
     {% for article in articles %}
     <div class="news-article article border-b border-gray-300 py-5"
@@ -70,64 +115,68 @@
         data-content="{{ article.summary | escape }}"
     >
         <h2 class="text-xl font-semibold">
-            <a href="{{ article.link }}" target="_blank" class="text-black-600 hover:underline">{{ article.headline }}</a>
+            <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
         </h2>
-        <p class="text-gray-600">{{ article.summary }}</p>
+        <p class="text-text">{{ article.summary }}</p>
 
-        <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-            <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
-        </form>
+        <section class="flex flex-wrap gap-4 mb-8"> 
+            <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+                <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
+            </form>
 
-        <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-            <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
-        </form>
+            <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
+            </form>
+        </section>
 
         <!-- Summary Button -->
         <button 
             onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
-            class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 mt-2"
+            class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
         >
             Get Summary
         </button>
 
-        <p id="sentiment-{{ article.id }}" class="mt-2 text-gray-700"></p>
-        <p id="summary-{{ article.id }}" class="mt-2 text-gray-700"></p>
+        <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
+        <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
     </div>
     {% endfor %}
 
     <!-- Pagination -->
-    <div class="pagination mt-6 text-center">
+    <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
         {% if page > 1 %}
-            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">First</a>
-            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Previous</a>
+            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">First</a>
+            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Previous</a>
         {% endif %}
         
-        <span class="font-semibold text-gray-700 mx-4">Page {{ page }} of {{ total_pages }}</span>
+        <span class="font-semibold text-white mx-4">Page {{ page }} of {{ total_pages }}</span>
         
         {% if page < total_pages %}
-            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Next</a>
-            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Last</a>
+            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Next</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Last</a>
         {% endif %}
     </div>
 
     <!-- Add New Article Form -->
-    <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
-    <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
-        <div>
-            <label for="headline" class="block text-lg">Headline:</label>
-            <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
-        <div>
-            <label for="summary" class="block text-lg">Summary:</label>
-            <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
-        </div>
-        <div>
-            <label for="link" class="block text-lg">Link:</label>
-            <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
+    <div class="bg-secondary p-10">
+        <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
+        <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
+            <div>
+                <label for="headline" class="block text-lg">Headline:</label>
+                <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="summary" class="block text-lg">Summary:</label>
+                <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="link" class="block text-lg">Link:</label>
+                <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
 
-        <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Submit Article</button>
-    </form>
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
+        </form>
+    </div>
 
     <script>
         // Analyze all visible articles on the page by sending their title and content
