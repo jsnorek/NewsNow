@@ -42,11 +42,12 @@
     hover:bg-[#F3E8F4] active:bg-[#E1D1E2]
     hover:text-[#6B75F2] active:text-[#5662E2]
     </div>
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#ff7a7a]">
+                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#C44040]">
                     <p class="font-semibold text-white">{{ message }}</p>
                 </div>
             {% endfor %}
