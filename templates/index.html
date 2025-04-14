@@ -112,6 +112,7 @@
         <h1 id="community-tab" class="text-5xl font-semibold font-heading mb-6 mt-14">Community News</h1>
     </section>
     
+    <div id="news-article">
         {% for article in articles %}
         <div class="news-article article border-b border-gray-300 py-5"
             data-id="{{ article.id }}"
@@ -145,6 +146,7 @@
             <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
         </div>
         {% endfor %}
+    </div>
 
     <!-- Pagination -->
     <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
