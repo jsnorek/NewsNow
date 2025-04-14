@@ -148,6 +148,21 @@
         {% endfor %}
     </div>
 
+    <!-- Community Articles (initially hidden) -->
+    <div id="community-articles" class="hidden">
+        {% if community_articles %}
+            {% for article in community_articles %}
+                <div class="bg-white shadow-md rounded px-6 py-4 mb-4">
+                    <h3 class="text-lg font-semibold">{{ article.title }}</h3>
+                    <p class="text-text">{{ article.content }}</p>
+                    <a href="{{ article.link }}" class="text-blue-500 hover:underline">Read more</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No community articles found.</p>
+        {% endif %}
+    </div>
+
     <!-- Pagination -->
     <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
         {% if page > 1 %}
