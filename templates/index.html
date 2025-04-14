@@ -311,6 +311,25 @@
                 }, 5000); // 5000ms = 5 seconds
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const newsTab = document.getElementById("news-tab");
+            const communityTab = document.getElementById("community-tab");
+            const newsArticles = document.getElementById("news-article");
+            const communityArticles = document.getElementById("community-articles");
+            newsTab.addEventListener("click", function () {
+                newsArticles.classList.remove("hidden");
+                communityArticles.classList.add("hidden");
+                newsTab.classList.add("text-accent", "hover:text-primary");
+                communityTab.classList.remove("text-accent");
+            });
+            communityTab.addEventListener("click", function () {
+                communityArticles.classList.remove("hidden");
+                newsArticles.classList.add("hidden");
+                communityTab.classList.add("text-accent", "hover:text-primary");
+                newsTab.classList.remove("text-accent");
+            });
+        });
     </script>
 </body>
 </html>
