@@ -107,41 +107,44 @@
     <!-- <img src="{{ url_for('weather_chart') }}" alt="Weather Data Chart"> -->
 
     <!-- News Articles -->
-    <h1 class="text-5xl font-semibold font-heading mb-6 mt-14"><a href="/" class="text-accent hover:text-primary">News Articles</a></h1>
+    <section class="flex flex-wrap gap-4 mb-8">
+        <h1 id="news-tab" class="text-5xl font-semibold font-heading mb-6 mt-14" class="text-accent hover:text-primary">News Articles</h1>
+        <h1 id="community-tab" class="text-5xl font-semibold font-heading mb-6 mt-14">Community News</h1>
+    </section>
     
-    {% for article in articles %}
-    <div class="news-article article border-b border-gray-300 py-5"
-        data-id="{{ article.id }}"
-        data-title="{{ article.headline | escape }}"
-        data-content="{{ article.summary | escape }}"
-    >
-        <h2 class="text-xl font-semibold">
-            <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
-        </h2>
-        <p class="text-text">{{ article.summary }}</p>
-
-        <section class="flex flex-wrap gap-4 mb-8"> 
-            <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-                <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
-            </form>
-
-            <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
-            </form>
-        </section>
-
-        <!-- Summary Button -->
-        <button 
-            onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
-            class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+        {% for article in articles %}
+        <div class="news-article article border-b border-gray-300 py-5"
+            data-id="{{ article.id }}"
+            data-title="{{ article.headline | escape }}"
+            data-content="{{ article.summary | escape }}"
         >
-            Get Summary
-        </button>
+            <h2 class="text-xl font-semibold">
+                <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
+            </h2>
+            <p class="text-text">{{ article.summary }}</p>
 
-        <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
-        <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
-    </div>
-    {% endfor %}
+            <section class="flex flex-wrap gap-4 mb-8"> 
+                <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+                    <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
+                </form>
+
+                <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                    <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
+                </form>
+            </section>
+
+            <!-- Summary Button -->
+            <button 
+                onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
+                class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+            >
+                Get Summary
+            </button>
+
+            <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
+            <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
+        </div>
+        {% endfor %}
 
     <!-- Pagination -->
     <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
