@@ -4,7 +4,7 @@ import io
 import os
 import shutil
 from flask import Flask, Response, jsonify, redirect, render_template, request, url_for, flash 
-from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle
+from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle, CommunityArticle
 from tests.sentiment_and_summary import get_sentiment_and_summary
 from tests.summary import get_summary
 from weather import get_weather
@@ -47,12 +47,13 @@ def index():
 
         # Queries NewsArticle table in the database to retrieve subset of records and stores in news_article variable as a list of NewsArticle objects 
         news_articles = session.query(NewsArticle).offset((page - 1) * per_page).limit(per_page).all() # Offset skips the articles that appear on previous page and limit fetches the 5 per page
+        community_articles = session.query(CommunityArticle).order_by(CommunityArticle.created_at.desc()).all()
         
         # Fetch weather data
         weather_data = session.query(Weather).first()
         # Returns rendered HTML template and passes news_articles to template as articles
         return render_template(
-            'index.html', articles=news_articles, weather=weather_data, 
+            'index.html', articles=news_articles, weather=weather_data, community_articles=community_articles,
             page=page, total_articles=total_articles, per_page=per_page, total_pages=total_pages
         )
     except Exception as e:
