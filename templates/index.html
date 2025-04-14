@@ -179,7 +179,7 @@
     </div>
 
     <!-- Add New Article Form -->
-    <div class="bg-secondary p-10">
+    <div id="news-form" class="bg-secondary p-10">
         <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a New Article</h2>
         <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
             <div>
@@ -200,7 +200,7 @@
     </div>
 
     <!-- Add New Community Article Form -->
-    <div class="bg-secondary p-10">
+    <div id="community-form" class="bg-secondary p-10">
         <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a Community Article</h2>
         <form action="{{ url_for('add_community_article') }}" method="post" class="space-y-4">
             <div>
@@ -344,17 +344,23 @@
         document.addEventListener("DOMContentLoaded", function () {
             const newsTab = document.getElementById("news-tab");
             const communityTab = document.getElementById("community-tab");
+            const communityForm = document.getElementById("community-form");
             const newsArticles = document.getElementById("news-article");
+            const newsForm = document.getElementById("news-form");
             const communityArticles = document.getElementById("community-articles");
             newsTab.addEventListener("click", function () {
                 newsArticles.classList.remove("hidden");
+                newsForm.classList.remove("hidden");
                 communityArticles.classList.add("hidden");
+                communityForm.classList.add("hidden");
                 newsTab.classList.add("text-accent", "hover:text-primary");
                 communityTab.classList.remove("text-accent");
             });
             communityTab.addEventListener("click", function () {
                 communityArticles.classList.remove("hidden");
+                communityForm.classList.remove("hidden");
                 newsArticles.classList.add("hidden");
+                newsForm.classList.add("hidden");
                 communityTab.classList.add("text-accent", "hover:text-primary");
                 newsTab.classList.remove("text-accent");
             });
