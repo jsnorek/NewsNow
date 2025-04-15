@@ -1,7 +1,8 @@
 import pytest
 from flask import url_for
 from app import app, session
-from models import NewsArticle
+from models import NewsArticle, create_or_open_index
+from whoosh.writing import AsyncWriter
 
 @pytest.fixture
 def client():
@@ -12,11 +13,28 @@ def client():
 
 @pytest.fixture
 def test_article():
-    """Creates a test article in the database."""
-    article = NewsArticle(headline="Test Article", summary="Test summary", link="http://example.com/test")
+    """Creates and indexes a test article in the database and Whoosh index."""
+    article = NewsArticle(
+        headline="Test Article",
+        summary="Test summary for search",
+        link="http://example.com/test",
+    )
     session.add(article)
     session.commit()
+
+    # Index the article in Whoosh
+    ix = create_or_open_index()
+    writer = AsyncWriter(ix)
+    writer.add_document(
+        id=str(article.id),
+        headline=article.headline,
+        summary=article.summary,
+    )
+    writer.commit()
+
     yield article
+
+    # Teardown: remove article from DB and optionally reindex
     session.delete(article)
     session.commit()
 
@@ -30,7 +48,10 @@ def test_add_article(client):
     """Test adding a new article."""
     response = client.post("/add", data={"headline": "New Article", "summary": "Summary", "link": "http://example.com"})
     assert response.status_code == 302  # Should redirect
-    assert session.query(NewsArticle).filter_by(headline="New Article").first() is not None
+    added = session.query(NewsArticle).filter_by(headline="New Article").first()
+    assert added is not None
+    session.delete(added)
+    session.commit()
 
 def test_edit_article(client, test_article):
     """Test editing an article."""
