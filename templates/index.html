@@ -109,7 +109,7 @@
     <!-- News Articles -->
     <section class="flex space-x-4 mb-8 border-b-2 border-gray-300">
         <h1 id="news-tab"
-        class="tab-button text-3xl font-semibold py-2 px-4 border-b-4 border-transparent border-accent shadow-md rounded">
+        class="tab-button text-3xl font-semibold py-2 px-4 border-b-4 border-transparent border-accent shadow-md rounded bg-white text-accent">
         News Articles</h1>
     <h1 id="community-tab"
         class="tab-button text-xl font-semibold py-2 px-4 border-b-4 border-transparent shadow-md rounded">
@@ -357,9 +357,9 @@
                 newsForm.classList.remove("hidden");
                 communityArticles.classList.add("hidden");
                 communityForm.classList.add("hidden");
-                newsTab.classList.add("text-accent", 'border-accent', 'text-3xl');
+                newsTab.classList.add("text-accent", 'border-accent', 'bg-white', 'text-3xl');
                 newsTab.classList.remove("text-xl");
-                communityTab.classList.remove("text-accent", 'text-3xl');
+                communityTab.classList.remove("text-accent", 'text-3xl', 'bg-white');
                 communityTab.classList.add("text-xl");
             });
             communityTab.addEventListener("click", function () {
@@ -368,8 +368,8 @@
                 newsArticles.classList.add("hidden");
                 newsForm.classList.add("hidden");
                 communityTab.classList.remove("text-xl");
-                communityTab.classList.add("text-accent",'border-accent', 'text-3xl');
-                newsTab.classList.remove("text-accent", "text-3xl");
+                communityTab.classList.add("text-accent",'border-accent', 'bg-white', 'text-3xl');
+                newsTab.classList.remove("text-accent", "text-3xl", 'bg-white');
                 newsTab.classList.add("text-xl");
             });
         });
