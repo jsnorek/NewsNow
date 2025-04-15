@@ -1,7 +1,7 @@
 # Database setup
 
 # from ast import Or
-from sqlalchemy import DateTime, Float, create_engine, Column, Integer, String
+from sqlalchemy import DateTime, Float, Text, create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 # from config import DATABASE_URL, DEFAULT_CITY
 from config import Config
@@ -38,6 +38,17 @@ class Weather(Base): # New class that inherits from Base to map to database tabl
     city = Column(String, nullable=False, default=Config.DEFAULT_CITY) # Defines column named city and the default is DEFAULT_CITY
     description = Column(String, nullable=False) # Defines column named description
     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc)) # Defines column named last_updated using a callable lambda function to dynamically assign a default value determined at runtime
+
+class CommunityArticle(Base):
+    __tablename__ = 'community_articles'
+    id = Column(Integer, primary_key=True)
+    username = Column(Text, nullable=False)
+    title = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    link = Column(Text, nullable=False)
+    author = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
 # Create table if it doesn't exist
 Base.metadata.create_all(engine)

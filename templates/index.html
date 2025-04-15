@@ -107,41 +107,61 @@
     <!-- <img src="{{ url_for('weather_chart') }}" alt="Weather Data Chart"> -->
 
     <!-- News Articles -->
-    <h1 class="text-5xl font-semibold font-heading mb-6 mt-14"><a href="/" class="text-accent hover:text-primary">News Articles</a></h1>
+    <section class="flex flex-wrap gap-4 mb-8">
+        <h1 id="news-tab" class="text-5xl font-semibold font-heading mb-6 mt-14" class="text-accent hover:text-primary">News Articles</h1>
+        <h1 id="community-tab" class="text-5xl font-semibold font-heading mb-6 mt-14">Community News</h1>
+    </section>
     
-    {% for article in articles %}
-    <div class="news-article article border-b border-gray-300 py-5"
-        data-id="{{ article.id }}"
-        data-title="{{ article.headline | escape }}"
-        data-content="{{ article.summary | escape }}"
-    >
-        <h2 class="text-xl font-semibold">
-            <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
-        </h2>
-        <p class="text-text">{{ article.summary }}</p>
-
-        <section class="flex flex-wrap gap-4 mb-8"> 
-            <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-                <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
-            </form>
-
-            <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
-            </form>
-        </section>
-
-        <!-- Summary Button -->
-        <button 
-            onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
-            class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+    <div id="news-article">
+        {% for article in articles %}
+        <div class="news-article article border-b border-gray-300 py-5"
+            data-id="{{ article.id }}"
+            data-title="{{ article.headline | escape }}"
+            data-content="{{ article.summary | escape }}"
         >
-            Get Summary
-        </button>
+            <h2 class="text-xl font-semibold">
+                <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
+            </h2>
+            <p class="text-text">{{ article.summary }}</p>
 
-        <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
-        <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
+            <section class="flex flex-wrap gap-4 mb-8"> 
+                <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+                    <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
+                </form>
+
+                <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                    <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
+                </form>
+            </section>
+
+            <!-- Summary Button -->
+            <button 
+                onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
+                class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+            >
+                Get Summary
+            </button>
+
+            <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
+            <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+
+    <!-- Community Articles (initially hidden) -->
+    <div id="community-articles" class="hidden">
+        {% if community_articles %}
+            {% for article in community_articles %}
+                <div class="bg-white shadow-md rounded px-6 py-4 mb-4">
+                    <h3 class="text-lg font-semibold">{{ article.title }}</h3>
+                    <p class="text-text">{{ article.content }}</p>
+                    <a href="{{ article.link }}" class="text-blue-500 hover:underline">Read more</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No community articles found.</p>
+        {% endif %}
+    </div>
 
     <!-- Pagination -->
     <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
@@ -159,7 +179,7 @@
     </div>
 
     <!-- Add New Article Form -->
-    <div class="bg-secondary p-10">
+    <div id="news-form" class="bg-secondary p-10">
         <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a New Article</h2>
         <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
             <div>
@@ -169,6 +189,35 @@
             <div>
                 <label for="summary" class="block text-lg">Summary:</label>
                 <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="link" class="block text-lg">Link:</label>
+                <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
+        </form>
+    </div>
+
+    <!-- Add New Community Article Form -->
+    <div id="community-form" class="bg-secondary p-10 hidden">
+        <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a Community Article</h2>
+        <form action="{{ url_for('add_community_article') }}" method="post" class="space-y-4">
+            <div>
+                <label for="username" class="block text-lg">Username:</label>
+                <input type="text" id="username" name="username" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="title" class="block text-lg">Title:</label>
+                <input type="text" id="title" name="title" required class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="content" class="block text-lg">Content:</label>
+                <textarea id="content" name="content" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="author" class="block text-lg">Author:</label>
+                <input type="text" id="author" name="author" required class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
                 <label for="link" class="block text-lg">Link:</label>
@@ -289,6 +338,31 @@
                     alert.style.opacity = "0";
                     setTimeout(() => alert.remove(), 500); // Remove element after fade-out
                 }, 5000); // 5000ms = 5 seconds
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const newsTab = document.getElementById("news-tab");
+            const communityTab = document.getElementById("community-tab");
+            const communityForm = document.getElementById("community-form");
+            const newsArticles = document.getElementById("news-article");
+            const newsForm = document.getElementById("news-form");
+            const communityArticles = document.getElementById("community-articles");
+            newsTab.addEventListener("click", function () {
+                newsArticles.classList.remove("hidden");
+                newsForm.classList.remove("hidden");
+                communityArticles.classList.add("hidden");
+                communityForm.classList.add("hidden");
+                newsTab.classList.add("text-accent", "hover:text-primary");
+                communityTab.classList.remove("text-accent");
+            });
+            communityTab.addEventListener("click", function () {
+                communityArticles.classList.remove("hidden");
+                communityForm.classList.remove("hidden");
+                newsArticles.classList.add("hidden");
+                newsForm.classList.add("hidden");
+                communityTab.classList.add("text-accent", "hover:text-primary");
+                newsTab.classList.remove("text-accent");
             });
         });
     </script>
