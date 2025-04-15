@@ -5,8 +5,8 @@ import os
 import shutil
 from flask import Flask, Response, jsonify, redirect, render_template, request, url_for, flash 
 from models import Weather, add_article_to_index, create_or_open_index, search_articles_complex_1, search_articles_complex_2, session, NewsArticle, CommunityArticle
-from tests.sentiment_and_summary import get_sentiment_and_summary
-from tests.summary import get_summary
+from sentiment_and_summary import get_sentiment_and_summary
+from summary import get_summary
 from weather import get_weather
 import logging
 from models import search_articles
