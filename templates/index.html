@@ -375,6 +375,15 @@
                 newsTab.classList.add("text-xl");
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const analyzeArticlesButton = document.getElementById("analyze-articles-button");
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button");
+            analyzeArticlesButton.addEventListener("click", function () {
+                analyzeArticlesButton.classList.add("hidden");
+                filterNegativeArticlesButton.classList.remove("hidden");
+            });
+        });
     </script>
 </body>
 </html>
