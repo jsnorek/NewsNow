@@ -34,6 +34,7 @@ def get_sentiment_and_summary(title, content):
             {"role": "user", "content": prompt}
         ],
         temperature=0.7,
+        max_tokens=100
     )
 
     # Extract the AI's response
