@@ -80,4 +80,13 @@ def test_get_summary_incomplete_response(monkeypatch):
     monkeypatch.setattr("summary.client.chat.completions.create", mock_create)
 
     result = get_summary("Test Title", "Test Content")
+    assert result == ""
+
+def test_get_summary_api_failure(monkeypatch):
+    def mock_create(*args, **kwargs):
+        raise Exception("API call failed")
+
+    monkeypatch.setattr("summary.client.chat.completions.create", mock_create)
+
+    result = get_summary("Test Title", "Test Content")
     assert result == "" 
