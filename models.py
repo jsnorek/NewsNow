@@ -27,6 +27,8 @@ class NewsArticle(Base): # New class that inherits from Base to map to database 
     id = Column(Integer, primary_key=True)  # Defines column named id which is an integer and primary key
     headline = Column(String, nullable=False) # Defines column to store strings for article headlines
     summary = Column(String, nullable=True) # Defines column to store strings for summary of the articles
+    sentiment = Column(String, nullable=True)
+    ai_summary = Column(String, nullable=True)
     link = Column(String, nullable=False) # Defines column to store strings for urls of the articles
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))  # Track updates
 
