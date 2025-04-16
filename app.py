@@ -337,7 +337,7 @@ def summary():
         result = get_summary(article_title, article_content)
 
         if result:
-            return jsonify({"summary": result})
+            return jsonify({"summary": result}), 200
         else:
             return jsonify({"error": "Incomplete AI response"}), 500
     except Exception as e:
