@@ -24,14 +24,18 @@ def get_summary(title, content):
     """
 
     # Make the API call
-    response = client.chat.completions.create(
-        model="gpt-4o",  
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes news articles."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.7,
-    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",  
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that summarizes news articles."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+        )
+    except Exception as e:
+        print(f"OpenAI API error: {e}")
+        return ""
 
     # Extract the AI's response
     content = response.choices[0].message.content

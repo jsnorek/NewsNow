@@ -1,5 +1,6 @@
 # Environment Variables
 .env
+*.env
 
 # Virtual Environments
 env/
@@ -7,3 +8,15 @@ venv/
 
 __pycache__/
 # config.py
+*.pyc
+
+# Local search index
+indexdir/
+
+# Test & coverage files
+.coverage
+htmlcov/
+
+# VSCode and system junk
+.vscode/
+.DS_Store
