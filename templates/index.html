@@ -86,7 +86,7 @@
             Analyze Visible Articles
         </button>
 
-        <button class="hidden" id="filter-negative-articles-button">Filter Negative Articles</button>
+        <button onclick="filterNegativeArticles()" class="hidden" id="filter-negative-articles-button">Filter Negative Articles</button>
 
     </section>
 
@@ -413,6 +413,17 @@
                 filterNegativeArticlesButton.classList.remove("hidden");
             });
         });
+        
+        function filterNegativeArticles() {
+            const articles = document.querySelectorAll('.news-article');
+            articles.forEach(article => {
+                const sentiment = article.dataset.sentiment;
+                if (sentiment && sentiment.toLowerCase() === 'negative') {
+                    article.classList.add('hidden');
+                } 
+            });
+        };
+
     </script>
 </body>
 </html>
