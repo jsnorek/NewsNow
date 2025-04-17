@@ -78,7 +78,7 @@
         <!-- Scrape Latest Articles Button -->
         <script src="{{ url_for('static', filename='script.js') }}"></script>
         <form action="/scrape" method="POST">
-            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Scrape Latest Articles</button>
+            <button type="submit" id="scrape-articles-button" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Scrape Latest Articles</button>
         </form>
 
         <!-- Setiment and Summary  -->
@@ -385,6 +385,10 @@
             const newsArticles = document.getElementById("news-article");
             const newsForm = document.getElementById("news-form");
             const communityArticles = document.getElementById("community-articles");
+            const analyzeArticlesButton = document.getElementById("analyze-articles-button");
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button");
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+            const scrapeArticlesButton = document.getElementById("scrape-articles-button");
             newsTab.addEventListener("click", function () {
                 newsArticles.classList.remove("hidden");
                 newsForm.classList.remove("hidden");
@@ -394,6 +398,8 @@
                 newsTab.classList.remove("text-xl");
                 communityTab.classList.remove("text-accent", 'text-3xl', 'bg-white');
                 communityTab.classList.add("text-xl");
+                analyzeArticlesButton.classList.remove("hidden");
+                scrapeArticlesButton.classList.remove("hidden");
             });
             communityTab.addEventListener("click", function () {
                 communityArticles.classList.remove("hidden");
@@ -404,6 +410,10 @@
                 communityTab.classList.add("text-accent",'border-accent', 'bg-white', 'text-3xl');
                 newsTab.classList.remove("text-accent", "text-3xl", 'bg-white');
                 newsTab.classList.add("text-xl");
+                analyzeArticlesButton.classList.add("hidden");
+                filterNegativeArticlesButton.classList.add("hidden");
+                unfilterArticlesButton.classList.add("hidden");
+                scrapeArticlesButton.classList.add("hidden");
             });
         });
 
