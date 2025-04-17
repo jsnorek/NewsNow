@@ -124,6 +124,8 @@
             data-id="{{ article.id }}"
             data-title="{{ article.headline | escape }}"
             data-content="{{ article.summary | escape }}"
+            data-sentiment="{{ article.sentiment }}"
+            data-ai_summary="{{ article.ai_summary }}"
         >
             <h2 class="text-xl font-semibold">
                 <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
@@ -148,8 +150,14 @@
                 Get Summary
             </button>
 
-            <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
-            <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p>
+            <!-- <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
+            <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p> -->
+            <p id="sentiment-{{ article.id }}" class="mt-2 text-text hidden">
+                {% if article.sentiment %}Sentiment: {{ article.sentiment }}{% endif %}
+            </p>
+            <p id="ai_summary-{{ article.id }}" class="mt-2 bg-secondary text-text hidden">
+                {% if article.ai_summary %}Summary: {{ article.ai_summary }}{% endif %}
+            </p>
         </div>
         {% endfor %}
     </div>
@@ -247,6 +255,19 @@
                 const articleId = article.dataset.id;
                 const title = article.dataset.title;
                 const content = article.dataset.content;
+                const sentimentElement = document.getElementById(`sentiment-${articleId}`);
+                const aiSummaryElement = document.getElementById(`ai_summary-${articleId}`);
+
+                const existingSentiment = article.dataset.sentiment;
+                const existingAiSummary = article.dataset.ai_summary;
+                // Use existing data if available
+                if (existingSentiment && existingSentiment !== "None" && existingAiSummary && existingAiSummary !== "None") {
+                    sentimentElement.innerText = `Sentiment: ${existingSentiment}`;
+                    aiSummaryElement.innerText = `Summary: ${existingAiSummary}`;
+                    sentimentElement.classList.remove('hidden');
+                    aiSummaryElement.classList.remove('hidden');
+                    continue;
+                }
 
                 try {
                     // Send a POST request to the backend API with the article info
@@ -257,54 +278,62 @@
                         },
                         body: JSON.stringify({
                             title: title,
-                            content: content
+                            content: content,
+                            article_id: articleId,
                         })
                     });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch sentiment and summary');
+                    }
 
                     // Parse the JSON response
                     const data = await response.json();
 
-                    // Display the sentiment and summary in the page using the article ID
-                    if (data.sentiment) {
-                        document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
-                    }
+                    // Update DOM
+                    if (data.sentiment && data.ai_summary) {
+                        sentimentElement.innerText = `Sentiment: ${data.sentiment}`;
+                        aiSummaryElement.innerText = `Summary: ${data.ai_summary}`;
+                        sentimentElement.classList.remove('hidden');
+                        aiSummaryElement.classList.remove('hidden');
 
-                    if (data.summary) {
-                        document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+                        // Also update dataset to cache it for next clicks
+                        article.dataset.sentiment = data.sentiment;
+                        article.dataset.ai_summary = data.ai_summary;
                     }
-                } catch (error) {
-                    console.error(`Error analyzing article ID ${articleId}:`, error);
-                }
-            }
+                    } catch (error) {
+                        console.error('Error analyzing article:', error);
+                    }
+                    }
         };
         
         // Fetch both sentiment and summary for a single article
-        async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
-            try {
-                // Send a POST request to the sentiment + summary endpoint
-                const response = await fetch('/api/sentiment-and-summary', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title: articleTitle, content: articleContent })
-                });
+        // async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
+        //     try {
+        //         // Send a POST request to the sentiment + summary endpoint
+        //         const response = await fetch('/api/sentiment-and-summary', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({ title: articleTitle, content: articleContent })
+        //         });
 
-                // Parse the JSON response
-                const data = await response.json();
+        //         // Parse the JSON response
+        //         const data = await response.json();
                 
-                // Update the page with the response from the backend
-                if (data.sentiment && data.summary) {
-                    document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
-                    document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
-                } else {
-                    document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
-                    document.getElementById(`summary-${articleId}`).innerText = "Error fetching summary";
-                }
-            } catch (error) {
-                console.error("Error fetching sentiment and summary:", error);
-            }
-        };
+        //         // Update the page with the response from the backend
+        //         if (data.sentiment && data.summary) {
+        //             document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
+        //             document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+        //         } else {
+        //             document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
+        //             document.getElementById(`summary-${articleId}`).innerText = "Error fetching summary";
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching sentiment and summary:", error);
+        //     }
+        // };
 
         // Fetch only the AI-generated summary for a single article
         async function getSummary(articleTitle, articleContent, articleId) {
