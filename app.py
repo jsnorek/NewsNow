@@ -307,20 +307,62 @@ def weather_chart():
         print(f"Error generating weather chart: {e}")
         return "Failed to generate weather chart.", 500
     
+# @app.route('/api/sentiment-and-summary', methods=['POST'])
+# def sentiment_and_summary():
+#     data = request.get_json()
+#     article_title = data.get('title')
+#     article_content = data.get('content')
+
+#     try:
+#         result = get_sentiment_and_summary(article_title, article_content)
+
+#         if result["summary"] and result["sentiment"]:
+#             return jsonify({
+#                 "summary": result["summary"],
+#                 "sentiment": result["sentiment"]
+#             })
+#         else:
+#             return jsonify({"error": "Incomplete AI response"}), 500
+#     except Exception as e:
+#         print(f"Error generating sentiment and summary: {e}")
+#         return jsonify({"error": "Internal server error"}), 500
+
 @app.route('/api/sentiment-and-summary', methods=['POST'])
 def sentiment_and_summary():
     data = request.get_json()
     article_title = data.get('title')
     article_content = data.get('content')
 
+    print(f"Received Article: {article_title}")
+
     try:
+        # Get sentiment and summary from AI
         result = get_sentiment_and_summary(article_title, article_content)
 
+        print(f"AI Summary: {result['summary']}")  # Debugging output
+        print(f"Sentiment: {result['sentiment']}")  # Debugging output
+
         if result["summary"] and result["sentiment"]:
-            return jsonify({
-                "summary": result["summary"],
-                "sentiment": result["sentiment"]
-            })
+            # Find the article in the database by title
+            article = session.query(NewsArticle).filter_by(headline=article_title).first()
+
+            if article:
+                print("Updating article in the database...")
+                # Update the article with the sentiment and summary
+                article.ai_summary = result["summary"]
+                article.sentiment = result["sentiment"]
+
+                # Commit the changes to the database
+                session.commit()
+                print("Database updated successfully!")
+
+                return jsonify({
+                    "ai_summary": result["summary"],
+                    "sentiment": result["sentiment"]
+                })
+            else:
+                print("Error: Article not found in database.")
+                return jsonify({"error": "Article not found"}), 404
         else:
             return jsonify({"error": "Incomplete AI response"}), 500
     except Exception as e:
