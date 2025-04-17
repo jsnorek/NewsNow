@@ -88,7 +88,7 @@
 
         <button onclick="filterNegativeArticles()" class="hidden" id="filter-negative-articles-button">Filter Negative Articles</button>
 
-        <button class="hidden" id="unfilter-articles-button">Unfilter Articles</button>
+        <button onclick="unfilterArticles()" class="hidden" id="unfilter-articles-button">Show All Articles</button>
 
     </section>
 
@@ -414,6 +414,11 @@
                 analyzeArticlesButton.classList.add("hidden");
                 filterNegativeArticlesButton.classList.remove("hidden");
             });
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+            filterNegativeArticlesButton.addEventListener("click", function () {
+                filterNegativeArticlesButton.classList.add("hidden");
+                unfilterArticlesButton.classList.remove("hidden");
+            });
         });
         
         function filterNegativeArticles() {
@@ -424,6 +429,18 @@
                     article.classList.add('hidden');
                 } 
             });
+        };
+
+        function unfilterArticles() {
+            const articles = document.querySelectorAll('.news-article');
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button"); 
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+
+            for (const article of articles) {
+                article.classList.remove('hidden');
+            }
+            unfilterArticlesButton.classList.add('hidden');
+            filterNegativeArticlesButton.classList.remove('hidden');
         };
 
     </script>
