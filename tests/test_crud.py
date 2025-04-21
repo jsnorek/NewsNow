@@ -1,3 +1,4 @@
+from unittest.mock import patch
 import pytest
 from flask import url_for
 from app import app, session
@@ -83,3 +84,16 @@ def test_search_function_empty_query(client):
     response = client.get("/search?query=")
     html = response.get_data(as_text=True)
     assert "Please enter a search term." in html  # Ensure warning appears
+
+def test_summary_success(client):
+    mock_summary = "This is a mock summary."
+
+    with patch("app.get_summary", return_value=mock_summary):
+        response = client.post("/api/summary", json={
+            "title": "Test Title",
+            "content": "Test content of the article."
+        })
+        
+        data = response.get_json()
+        assert response.status_code == 200
+        assert data["summary"] == mock_summary
