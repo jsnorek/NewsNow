@@ -109,3 +109,14 @@ def test_summary_incomplete_response(client):
         assert response.status_code == 500
         assert "error" in data
         assert data["error"] == "Incomplete AI response"
+
+def test_summary_internal_error(client):
+    with patch("app.get_summary", side_effect=Exception("Something went wrong")):
+        response = client.post("/api/summary", json={
+            "title": "Test Title",
+            "content": "Test content of the article."
+        })
+        
+        assert response.status_code == 500
+        data = response.get_json()
+        assert "error" in data
