@@ -97,3 +97,15 @@ def test_summary_success(client):
         data = response.get_json()
         assert response.status_code == 200
         assert data["summary"] == mock_summary
+
+def test_summary_incomplete_response(client):
+    with patch("app.get_summary", return_value=None):
+        response = client.post("/api/summary", json={
+            "title": "Test Title",
+            "content": "Test content of the article."
+        })
+
+        data = response.get_json()
+        assert response.status_code == 500
+        assert "error" in data
+        assert data["error"] == "Incomplete AI response"
