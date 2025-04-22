@@ -39,6 +39,8 @@ def test_article():
     session.delete(article)
     session.commit()
 
+# -------------------- Page & CRUD Tests --------------------
+
 def test_index_page(client):
     """Test if the homepage loads correctly."""
     response = client.get("/")
