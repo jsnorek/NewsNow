@@ -45,6 +45,11 @@ def test_index_page(client):
     assert response.status_code == 200
     assert "News Articles" in response.get_data(as_text=True)
 
+def test_update_weather(client):
+    response = client.post('/update_weather', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Weather updated successfully!" in response.data or b"Failed to update weather data" in response.data
+
 def test_add_article(client):
     """Test adding a new article."""
     response = client.post("/add", data={"headline": "New Article", "summary": "Summary", "link": "http://example.com"})
