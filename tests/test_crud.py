@@ -127,3 +127,32 @@ def test_summary_internal_error(client):
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
+
+def test_sentiment_and_summary_success(client):
+    mock_result = {
+        "summary": "This is a mock AI summary.",
+        "sentiment": "Positive"
+    }
+
+    article = NewsArticle(
+        headline="Test Title",
+        summary="Original Summary",
+        link="http://example.com"
+    )
+    session.add(article)
+    session.commit()
+
+    with patch("app.get_sentiment_and_summary", return_value=mock_result):
+        response = client.post("/api/sentiment-and-summary", json={
+            "title": "Test Title",
+            "content": "Test content of the article."
+        })
+
+        data = response.get_json()
+        assert response.status_code == 200
+        assert data["sentiment"] == mock_result["sentiment"]
+        assert data["ai_summary"] == mock_result["summary"]
+
+        updated_article = session.query(NewsArticle).filter_by(headline="Test Title").first()
+        assert updated_article.sentiment == mock_result["sentiment"]
+        assert updated_article.ai_summary == mock_result["summary"]
