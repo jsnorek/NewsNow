@@ -167,3 +167,18 @@ def test_sentiment_and_summary_unexpected_error(client):
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
+
+def test_sentiment_and_summary_article_not_found(client):
+    mock_result = {
+        "sentiment": "Positive",
+        "summary": "This is a mock AI summary."
+    }
+    with patch("app.get_sentiment_and_summary", return_value=mock_result):
+        response = client.post("/api/sentiment-and-summary", json={
+            "title": "Nonexistent Article",
+            "content": "Some content"
+        })
+
+        assert response.status_code == 404
+        data = response.get_json()
+        assert data["error"] == "Article not found"
