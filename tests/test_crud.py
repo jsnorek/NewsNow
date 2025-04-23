@@ -156,3 +156,14 @@ def test_sentiment_and_summary_success(client):
         updated_article = session.query(NewsArticle).filter_by(headline="Test Title").first()
         assert updated_article.sentiment == mock_result["sentiment"]
         assert updated_article.ai_summary == mock_result["summary"]
+
+def test_sentiment_and_summary_unexpected_error(client):
+    with patch("app.get_sentiment_and_summary", side_effect=Exception("Something went wrong")):
+        response = client.post("/api/sentiment-and-summary", json={
+            "title": "Test Title",
+            "content": "Test content of the article."
+        })
+
+        assert response.status_code == 500
+        data = response.get_json()
+        assert "error" in data
