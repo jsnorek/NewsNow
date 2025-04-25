@@ -27,6 +27,7 @@ def test_get_summary_success(monkeypatch):
     result = get_summary("Test Title", "Test Content") # Test title and content
     assert result == "This is a summary." # Ensure the returned summary matches the mock content
 
+# Test that the get_summary function handles incomplete responses
 def test_get_summary_incomplete_response(monkeypatch):
     class MockMessage:
         content = "No summary provided."
