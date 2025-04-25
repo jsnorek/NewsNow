@@ -1,6 +1,6 @@
-# News & Weather Aggregator
+# NewsNow
 
-This is a simple web application that scrapes news articles and fetches weather data, allowing users to search articles and track weather trends.
+NewsNow delivers a daily news and weather feed while allowing users to filter articles based on tone, ensuring a stress-free and tailored reading experience.
 
 ## Features
 -  **Scrapes news articles** from the web and stores them in a SQLite database  
