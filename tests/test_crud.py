@@ -71,6 +71,7 @@ def test_delete_article(client, test_article):
 
 # Test adding a community article
 def test_add_community_article(client):
+    # Send POST request to teh '/add_community endpoint with test data
     response = client.post(
         "/add_community",
         data={
@@ -81,11 +82,13 @@ def test_add_community_article(client):
             "author": "Test Author"
         }
     )
-    assert response.status_code == 302  
+    assert response.status_code == 302 # Assert the response status code is 302, indicating successful form submission and redirect
 
-    added = session.query(CommunityArticle).filter_by(title="New Community Article").first()
-    assert added is not None
+    # Query the database to check if the article was successfully added
+    added = session.query(CommunityArticle).filter_by(title="New Community Article").first() 
+    assert added is not None # Assert the queried article exists in the database
 
+    # Cleanup to remove the added article from the database to ensure test isolation
     session.delete(added)
     session.commit()
 
