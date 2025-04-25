@@ -194,6 +194,7 @@ def test_sentiment_and_summary_unexpected_error(client):
         data = response.get_json() # Parse the response
         assert "error" in data # Ensure error field exists in response
 
+# Test case for AI sentiment + summary generation when the article is not found in the DB
 def test_sentiment_and_summary_article_not_found(client):
     mock_result = {
         "sentiment": "Positive",
