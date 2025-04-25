@@ -3,6 +3,7 @@ from app import app
 import pytest
 from summary import get_summary
 
+# Tests that the get_summary function correctly parses a complete AI summary response
 def test_get_summary_success(monkeypatch):
     class MockMessage:
         content = "Summary: This is a summary."
