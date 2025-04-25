@@ -131,15 +131,17 @@ def test_summary_incomplete_response(client):
 
 # Test unexpected internal error during AI summary generation that raises exception
 def test_summary_internal_error(client):
+    # Patch get_summary to raise an exception when called
     with patch("app.get_summary", side_effect=Exception("Something went wrong")):
+        # Simulate the POST request
         response = client.post("/api/summary", json={
             "title": "Test Title",
             "content": "Test content of the article."
         })
         
-        assert response.status_code == 500
-        data = response.get_json()
-        assert "error" in data
+        assert response.status_code == 500 # Expect internal server error
+        data = response.get_json() # Parse JSON response
+        assert "error" in data # Ensure error message is present
 
 # -------------------- AI Sentiment and Summary Tests --------------------
 
