@@ -104,14 +104,15 @@ def test_summary_success(client):
 
     # Patch the get_summary function to return the mock_summary instead of calling the real AI
     with patch("app.get_summary", return_value=mock_summary):
+        # Simulate a POST request to the /api/summary endpoint with article data
         response = client.post("/api/summary", json={
             "title": "Test Title",
             "content": "Test content of the article."
         })
         
-        data = response.get_json()
-        assert response.status_code == 200
-        assert data["summary"] == mock_summary
+        data = response.get_json() # Parse the reponse JSON
+        assert response.status_code == 200 # Assert the request was successful
+        assert data["summary"] == mock_summary # Assert the summary matches the mock
 
 def test_summary_incomplete_response(client):
     with patch("app.get_summary", return_value=None):
