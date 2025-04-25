@@ -114,6 +114,7 @@ def test_summary_success(client):
         assert response.status_code == 200 # Assert the request was successful
         assert data["summary"] == mock_summary # Assert the summary matches the mock
 
+# Test when the AI returns an incomplete response (None), triggering a 500 error
 def test_summary_incomplete_response(client):
     with patch("app.get_summary", return_value=None):
         response = client.post("/api/summary", json={
