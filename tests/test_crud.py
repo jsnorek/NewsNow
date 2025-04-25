@@ -147,33 +147,38 @@ def test_summary_internal_error(client):
 
 # Test success case for sentiment + summary with DB update
 def test_sentiment_and_summary_success(client):
+    # Define a mock result to return from the AI function
     mock_result = {
         "summary": "This is a mock AI summary.",
         "sentiment": "Positive"
     }
 
+    # Create a mock article in the test DB to be updated
     article = NewsArticle(
         headline="Test Title",
         summary="Original Summary",
         link="http://example.com"
     )
     session.add(article)
-    session.commit()
+    session.commit() # Commit the article so it exists in the DB
 
+    # Patch the AI function to return the mock sentiment + summary
     with patch("app.get_sentiment_and_summary", return_value=mock_result):
+        # Send POST request to the endpoint
         response = client.post("/api/sentiment-and-summary", json={
             "title": "Test Title",
             "content": "Test content of the article."
         })
 
-        data = response.get_json()
-        assert response.status_code == 200
-        assert data["sentiment"] == mock_result["sentiment"]
-        assert data["ai_summary"] == mock_result["summary"]
+        data = response.get_json() # Parse the response
+        assert response.status_code == 200 # Expect request success
+        assert data["sentiment"] == mock_result["sentiment"] # Check returned sentiment
+        assert data["ai_summary"] == mock_result["summary"] # Check returned summary
 
+        # Query the DB to confirm it was updated
         updated_article = session.query(NewsArticle).filter_by(headline="Test Title").first()
-        assert updated_article.sentiment == mock_result["sentiment"]
-        assert updated_article.ai_summary == mock_result["summary"]
+        assert updated_article.sentiment == mock_result["sentiment"] # Check the updated article's sentiment 
+        assert updated_article.ai_summary == mock_result["summary"] # Check the updated article's summary
 
 def test_sentiment_and_summary_unexpected_error(client):
     with patch("app.get_sentiment_and_summary", side_effect=Exception("Something went wrong")):
