@@ -180,6 +180,7 @@ def test_sentiment_and_summary_success(client):
         assert updated_article.sentiment == mock_result["sentiment"] # Check the updated article's sentiment 
         assert updated_article.ai_summary == mock_result["summary"] # Check the updated article's summary
 
+# Test unexpected error during AI sentiment + summary generation
 def test_sentiment_and_summary_unexpected_error(client):
     with patch("app.get_sentiment_and_summary", side_effect=Exception("Something went wrong")):
         response = client.post("/api/sentiment-and-summary", json={
