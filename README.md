@@ -13,6 +13,7 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Learnings](#learnings-from-building-this-application)
 - [Database Schema Example](#example-of-database-schema)
 - [Contributing](#contributing)
+- [Stretch Goals](#stretch-goals)
 
 ## Features
 - **News Tab**
@@ -140,4 +141,17 @@ For Weather
 ## Contributing
 
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcomed.
+
+## Stretch Goals
+
+- Login feature
+  - Ability to update user information
+  - Usernames being tied to article adds
+  - Users can only edit/delete articles they've added
+  - User badges/achievements
+  - Users can favorite articles
+  - AI personalized recommendations
+- Content moderation for added/edited articles
+- Scraping from additional news sites
+
 
