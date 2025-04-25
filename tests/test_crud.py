@@ -69,6 +69,25 @@ def test_delete_article(client, test_article):
     assert response.status_code == 302
     assert session.query(NewsArticle).get(test_article.id) is None
 
+def test_add_community_article(client):
+    response = client.post(
+        "/add_community",
+        data={
+            "username": "TestUser",                     
+            "title": "New Community Article",           
+            "content": "Community content",
+            "link": "http://example.com",
+            "author": "Test Author"
+        }
+    )
+    assert response.status_code == 302  
+
+    added = session.query(CommunityArticle).filter_by(title="New Community Article").first()
+    assert added is not None
+
+    session.delete(added)
+    session.commit()
+
 # -------------------- Weather Update Test --------------------
 
 # Test updating the weather
