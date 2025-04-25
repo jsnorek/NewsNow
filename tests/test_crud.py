@@ -196,18 +196,20 @@ def test_sentiment_and_summary_unexpected_error(client):
 
 # Test case for AI sentiment + summary generation when the article is not found in the DB
 def test_sentiment_and_summary_article_not_found(client):
+    # Define a mock result to return from the AI function
     mock_result = {
         "sentiment": "Positive",
         "summary": "This is a mock AI summary."
     }
+    # No article is added to the DB here, it is simulating "not found"
     with patch("app.get_sentiment_and_summary", return_value=mock_result):
         response = client.post("/api/sentiment-and-summary", json={
-            "title": "Nonexistent Article",
+            "title": "Nonexistent Article", # Title not present in DB
             "content": "Some content"
         })
 
-        assert response.status_code == 404
-        data = response.get_json()
+        assert response.status_code == 404 #  Should return "not found"
+        data = response.get_json() # Parse the response
         assert data["error"] == "Article not found"
 
 def test_sentiment_and_summary_incomplete_ai_response(client):
