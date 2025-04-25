@@ -14,14 +14,18 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Database Schema Example](#example-of-database-schema)
 
 ## Features
-- **Scrapes news articles** from NPR.org and stores them in a SQLite database 
-- **Community news articles tab** that lets users share important news articles  
+- **News Tab**
+  - Scrapes news articles from NPR.org and stores them in a SQLite database 
+  - AI-powered summarization + sentiment analysis on button click
+  - Add, edit, and delete articles
+  - Advanced full-text search using Whoosh:  
+    - Search across both headlines and summaries 
+    - Use wildcards and exact phrases  
+- **Community News Articles Tab** that lets users share/add important news articles  
 - **Fetches real-time weather data** for specific location from OpenWeather API  
-- **Advanced full-text search** using Whoosh:  
-  - Search across both **headlines and summaries**  
-  - Use **wildcards** and **exact phrases**  
 - **Pagination** to display 5 articles per page  
 - **Data visualization**: Displays a weather temperature trends chart
+- **Secure backend login authorization** for controlled and protected access to data sources.
 
 ![ezgif com-optimize (6)](https://github.com/user-attachments/assets/de3e7dea-8abc-4308-b10c-810aa12a37eb)
 
