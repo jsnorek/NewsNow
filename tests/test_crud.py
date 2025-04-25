@@ -211,7 +211,8 @@ def test_sentiment_and_summary_article_not_found(client):
         assert response.status_code == 404 #  Should return "not found"
         data = response.get_json() # Parse the response
         assert data["error"] == "Article not found"
-
+        
+# Test case where AI returns incomplete response (in this case a missing sentiment)
 def test_sentiment_and_summary_incomplete_ai_response(client):
     mock_result = {
         "summary": "Partial summary.",
