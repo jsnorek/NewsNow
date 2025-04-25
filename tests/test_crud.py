@@ -69,6 +69,7 @@ def test_delete_article(client, test_article):
     assert response.status_code == 302
     assert session.query(NewsArticle).get(test_article.id) is None
 
+# Test adding a community article
 def test_add_community_article(client):
     response = client.post(
         "/add_community",
