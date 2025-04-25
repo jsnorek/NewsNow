@@ -145,6 +145,7 @@ def test_summary_internal_error(client):
 
 # -------------------- AI Sentiment and Summary Tests --------------------
 
+# Test success case for sentiment + summary with DB update
 def test_sentiment_and_summary_success(client):
     mock_result = {
         "summary": "This is a mock AI summary.",
