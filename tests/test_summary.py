@@ -53,10 +53,14 @@ def test_get_summary_incomplete_response(monkeypatch):
 
 # Test that the `get_summary` function handles API failures properly
 def test_get_summary_api_failure(monkeypatch):
+    
+    # Define a mock `create` function that raises an exception to simulate an API failure
     def mock_create(*args, **kwargs):
-        raise Exception("API call failed")
+        raise Exception("API call failed") # Simulate an API failure
 
+    # Use monkeypatch to replace the actual `create` method with the mock version
     monkeypatch.setattr("summary.client.chat.completions.create", mock_create)
 
+    # On API failure, function should return an empty string
     result = get_summary("Test Title", "Test Content")
-    assert result == "" 
+    assert result == "" # Ensure the result is empty when the API call fails
