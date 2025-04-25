@@ -116,16 +116,18 @@ def test_summary_success(client):
 
 # Test when the AI returns an incomplete response (None), triggering a 500 error
 def test_summary_incomplete_response(client):
+    # Patch get_summary to simulate an incomplete AI response (None)
     with patch("app.get_summary", return_value=None):
+        # Simulate a POST request to the endpoint
         response = client.post("/api/summary", json={
             "title": "Test Title",
             "content": "Test content of the article."
         })
 
-        data = response.get_json()
-        assert response.status_code == 500
-        assert "error" in data
-        assert data["error"] == "Incomplete AI response"
+        data = response.get_json() # Parse the response JSON
+        assert response.status_code == 500 # Should return internal server error
+        assert "error" in data # Confirm that an error message exists
+        assert data["error"] == "Incomplete AI response" # Check for specific error message
 
 def test_summary_internal_error(client):
     with patch("app.get_summary", side_effect=Exception("Something went wrong")):
