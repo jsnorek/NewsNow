@@ -96,7 +96,7 @@ def search():
                 flash("No articles found for your search.", "info")
         else:
             results = [] # If no search term entered results is assigned empty list
-            flash("Please enter a search term.", "warning")
+            flash("Please enter a search term.", "info")
         
         # Fetch weather data so it's always available
         weather_data = session.query(Weather).first()

@@ -46,11 +46,23 @@
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#C44040]">
-                    <p class="font-semibold text-white">{{ message }}</p>
-                </div>
-            {% endfor %}
+            <div class="my-4">
+                {% for category, message in messages %}
+                <div class="
+                alert px-4 py-2 rounded-md text-sm mb-2
+                {% if category == 'success' %}
+                    bg-green-500 text-white
+                {% elif category == 'error' %}
+                    bg-red-500 text-white
+                {% elif category == 'info' %}
+                    bg-yellow-500 text-black
+                {% else %}
+                    bg-blue-500 text-white
+                {% endif %}
+                ">
+                {{ message }}
+                {% endfor %}
+            </div>
         {% endif %}
     {% endwith %}
 
