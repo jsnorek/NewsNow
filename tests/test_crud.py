@@ -129,6 +129,7 @@ def test_summary_incomplete_response(client):
         assert "error" in data # Confirm that an error message exists
         assert data["error"] == "Incomplete AI response" # Check for specific error message
 
+# Test unexpected internal error during AI summary generation that raises exception
 def test_summary_internal_error(client):
     with patch("app.get_summary", side_effect=Exception("Something went wrong")):
         response = client.post("/api/summary", json={
