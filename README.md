@@ -30,12 +30,6 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - **Data visualization**: Displays a weather temperature trends chart
 - **Secure backend login authorization** for controlled and protected access to data sources.
 
-![ezgif com-optimize (6)](https://github.com/user-attachments/assets/de3e7dea-8abc-4308-b10c-810aa12a37eb)
-
-**New search queries options and data chart**
-![Screenshot 2025-02-28 at 9 12 53 AM](https://github.com/user-attachments/assets/f1564279-cacf-4ab9-90cd-3c211b703844)
-
-
 ## API Setup
 
 This weather app uses the OpenWeatherMap API to pull the current weather. The OpenWeatherMap API needed for this project is free to use if you sign up for a student account.
