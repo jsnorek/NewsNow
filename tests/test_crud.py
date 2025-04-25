@@ -98,9 +98,11 @@ def test_search_function_empty_query(client):
 
 # -------------------- AI Summary Tests --------------------
 
+# Test successful summary generation via the /api/summary route
 def test_summary_success(client):
-    mock_summary = "This is a mock summary."
+    mock_summary = "This is a mock summary." # Define a mock summary to return from the AI function
 
+    # Patch the get_summary function to return the mock_summary instead of calling the real AI
     with patch("app.get_summary", return_value=mock_summary):
         response = client.post("/api/summary", json={
             "title": "Test Title",
