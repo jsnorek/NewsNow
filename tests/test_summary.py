@@ -51,6 +51,7 @@ def test_get_summary_incomplete_response(monkeypatch):
     result = get_summary("Test Title", "Test Content")
     assert result == "" # Ensure the result is empty for an incomplete response
 
+# Test that the `get_summary` function handles API failures properly
 def test_get_summary_api_failure(monkeypatch):
     def mock_create(*args, **kwargs):
         raise Exception("API call failed")
