@@ -211,14 +211,15 @@ def test_sentiment_and_summary_article_not_found(client):
         assert response.status_code == 404 #  Should return "not found"
         data = response.get_json() # Parse the response
         assert data["error"] == "Article not found"
-        
+
 # Test case where AI returns incomplete response (in this case a missing sentiment)
 def test_sentiment_and_summary_incomplete_ai_response(client):
     mock_result = {
         "summary": "Partial summary.",
-        "sentiment": None
+        "sentiment": None # Missing sentiment
     }
 
+    # Add an article that matches the incoming title
     article = NewsArticle(
         headline="Test Title",
         summary="Original summary",
@@ -227,12 +228,13 @@ def test_sentiment_and_summary_incomplete_ai_response(client):
     session.add(article)
     session.commit()
 
+    # Patch the AI function to return an incomplete response
     with patch("app.get_sentiment_and_summary", return_value=mock_result):
         response = client.post("/api/sentiment-and-summary", json={
             "title": "Test Title",
             "content": "Test content"
         })
 
-        data = response.get_json()
-        assert response.status_code == 500
-        assert data["error"] == "Incomplete AI response"
+        data = response.get_json() # Parse the response
+        assert response.status_code == 500 # Expect internal error due to incomplete data
+        assert data["error"] == "Incomplete AI response" 
