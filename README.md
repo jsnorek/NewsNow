@@ -2,6 +2,17 @@
 
 NewsNow delivers a daily news and weather feed while allowing users to filter articles based on tone, ensuring a stress-free and tailored reading experience.
 
+## Contents
+- [Features](#features)
+- [API Setup](#api-setup)
+- [Installation](#installation)
+- [Using Search](#using-search)
+- [Reindexing Search](#reindexing-search-data-if-needed)
+- [Weather Data Visualization](#weather-data-visualization)
+- [Deployment Process](#deployment-process)
+- [Learnings](#learnings-from-building-this-application)
+- [Database Schema Example](#example-of-database-schema)
+
 ## Features
 -  **Scrapes news articles** from the web and stores them in a SQLite database  
 - **Fetches real-time weather data** from OpenWeather API  
