@@ -29,22 +29,27 @@ def test_get_summary_success(monkeypatch):
 
 # Test that the get_summary function handles incomplete responses
 def test_get_summary_incomplete_response(monkeypatch):
+    
+    # Simulate an AI message without a valid summary by defining mock response
     class MockMessage:
-        content = "No summary provided."
+        content = "No summary provided." # Simulate an incomplete or invalid response
 
     class MockChoice:
-        message = MockMessage()
+        message = MockMessage() # Attach the mock message to the "choice"
 
     class MockResponse:
-        choices = [MockChoice()]
+        choices = [MockChoice()] # Mock AI response with a single choice
 
+    # Define a mock `create` function that returns the mock response when called
     def mock_create(*args, **kwargs):
         return MockResponse()
 
+    # Use monkeypatch to replace the actual `create` method with the mock version
     monkeypatch.setattr("summary.client.chat.completions.create", mock_create)
 
+    # Call `get_summary` with test inputs and check the result
     result = get_summary("Test Title", "Test Content")
-    assert result == ""
+    assert result == "" # Ensure the result is empty for an incomplete response
 
 def test_get_summary_api_failure(monkeypatch):
     def mock_create(*args, **kwargs):
