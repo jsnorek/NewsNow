@@ -17,6 +17,7 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Stretch Goals](#stretch-goals)
 
 ## Features
+[Back to Contents](#contents)
 - **News Tab**
   - Scrapes news articles from NPR.org and stores them in a SQLite database 
   - AI-powered summarization + sentiment analysis on button click
@@ -31,6 +32,7 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - **Secure backend login authorization** for controlled and protected access to data sources.
 
 ## API Setup
+[Back to Contents](#contents)
 
 This weather app uses the OpenWeatherMap API to pull the current weather. The OpenWeatherMap API needed for this project is free to use if you sign up for a student account.
 
@@ -39,6 +41,8 @@ https://openweathermap.org/api
 Registration for an API key is neccessary. To do this, you must sign up for an account and provide student details. Once approved, log in and you can find you key under "My API keys".
 
 ## Installation
+[Back to Contents](#contents)
+
 1. Clone this repository:
 ```
 git clone git@github.com:jsnorek/e-commerce-product-aggregator.git
@@ -85,7 +89,9 @@ python app.py
 
 And then use the link to open in your browser.
 
-## Using Search 
+## Using Search
+[Back to Contents](#contents)
+
 The app provides **two advanced search options**:
 1. Search across headlines & summaries
 2. Wildcard or exact phrase search
@@ -93,6 +99,8 @@ The app provides **two advanced search options**:
 To try these options, select the desired search type in the search bar and enter your query.
 
 ## Reindexing Search Data (if needed)
+[Back to Contents](#contents)
+
 If search results appear outdated or incorrect, **reindex the articles**:
 ```
 curl http://127.0.0.1:5000/reindex
@@ -101,6 +109,8 @@ curl http://127.0.0.1:5000/reindex
 This removes and rebuilds the search index with all articles.
 
 ## Weather Data Visualization
+[Back to Contents](#contents)
+
 A temperature trends chart is available at:
 http://127.0.0.1:5000/weather_chart
 
@@ -108,6 +118,8 @@ It displays a time-series plot of recorded temperatures.
 This also displays on the main app homepage.
 
 ## Deployment Process
+[Back to Contents](#contents)
+
 This application is deployed on Render at this [site](https://e-commerce-product-aggregator.onrender.com/)
 
 The deployment process includes:
@@ -118,6 +130,8 @@ The deployment process includes:
 4. Ensuring your config.py file is set up correctly to distinguish between production and local development
 
 ## Learnings from Building this Application
+[Back to Contents](#contents)
+
 - Deepened understanding of handling API calls, forms, and session management
 - Practiced database management including structuring and querying a database
 - Implemented Whoosh full-text search functionalities for advanced searching
@@ -125,6 +139,8 @@ The deployment process includes:
 - Practiced deployment with Render
 
 ### Example of database schema
+[Back to Contents](#contents)
+
 For Articles
 
 <img width="1103" alt="Screenshot 2025-02-21 at 11 17 46 AM" src="https://github.com/user-attachments/assets/653233ca-3a82-4fb8-906e-b76c181b8964" />
@@ -134,6 +150,7 @@ For Weather
 <img width="377" alt="Screenshot 2025-02-21 at 11 18 41 AM" src="https://github.com/user-attachments/assets/1902430b-cf4b-478b-b62c-a99a7cc4e7ce" />
 
 ## Drawing Board
+[Back to Contents](#contents)
 
 [Trello Board](https://trello.com/b/SiEM9n7u/news-final-project)
 
@@ -141,10 +158,12 @@ For Weather
 
 
 ## Contributing
+[Back to Contents](#contents)
 
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcomed.
 
 ## Stretch Goals
+[Back to Contents](#contents)
 
 - Login feature
   - Ability to update user information
