@@ -14,8 +14,9 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Database Schema Example](#example-of-database-schema)
 
 ## Features
--  **Scrapes news articles** from the web and stores them in a SQLite database  
-- **Fetches real-time weather data** from OpenWeather API  
+- **Scrapes news articles** from NPR.org and stores them in a SQLite database 
+- **Community news articles tab** that lets users share important news articles  
+- **Fetches real-time weather data** for specific location from OpenWeather API  
 - **Advanced full-text search** using Whoosh:  
   - Search across both **headlines and summaries**  
   - Use **wildcards** and **exact phrases**  
