@@ -47,11 +47,6 @@ def test_index_page(client):
     assert response.status_code == 200
     assert "News Articles" in response.get_data(as_text=True)
 
-def test_update_weather(client):
-    response = client.post('/update_weather', follow_redirects=True)
-    assert response.status_code == 200
-    assert b"Weather updated successfully!" in response.data or b"Failed to update weather data" in response.data
-
 def test_add_article(client):
     """Test adding a new article."""
     response = client.post("/add", data={"headline": "New Article", "summary": "Summary", "link": "http://example.com"})
@@ -74,6 +69,15 @@ def test_delete_article(client, test_article):
     assert response.status_code == 302
     assert session.query(NewsArticle).get(test_article.id) is None
 
+# -------------------- Weather Update Test --------------------
+
+def test_update_weather(client):
+    response = client.post('/update_weather', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Weather updated successfully!" in response.data or b"Failed to update weather data" in response.data
+
+# -------------------- Search Function Tests --------------------
+
 def test_search_function_valid_query(client, test_article):
     """Test search with a valid query."""
     response = client.get(f"/search?query=Test")
@@ -91,6 +95,8 @@ def test_search_function_empty_query(client):
     response = client.get("/search?query=")
     html = response.get_data(as_text=True)
     assert "Please enter a search term." in html  # Ensure warning appears
+
+# -------------------- AI Summary Tests --------------------
 
 def test_summary_success(client):
     mock_summary = "This is a mock summary."
@@ -127,6 +133,8 @@ def test_summary_internal_error(client):
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
+
+# -------------------- AI Sentiment and Summary Tests --------------------
 
 def test_sentiment_and_summary_success(client):
     mock_result = {
