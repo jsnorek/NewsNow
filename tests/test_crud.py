@@ -182,3 +182,27 @@ def test_sentiment_and_summary_article_not_found(client):
         assert response.status_code == 404
         data = response.get_json()
         assert data["error"] == "Article not found"
+
+def test_sentiment_and_summary_incomplete_ai_response(client):
+    mock_result = {
+        "summary": "Partial summary.",
+        "sentiment": None
+    }
+
+    article = NewsArticle(
+        headline="Test Title",
+        summary="Original summary",
+        link="http://example.com"
+    )
+    session.add(article)
+    session.commit()
+
+    with patch("app.get_sentiment_and_summary", return_value=mock_result):
+        response = client.post("/api/sentiment-and-summary", json={
+            "title": "Test Title",
+            "content": "Test content"
+        })
+
+        data = response.get_json()
+        assert response.status_code == 500
+        assert data["error"] == "Incomplete AI response"
