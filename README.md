@@ -12,6 +12,7 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Deployment Process](#deployment-process)
 - [Learnings](#learnings-from-building-this-application)
 - [Database Schema Example](#example-of-database-schema)
+- [Drawing Board](#drawing-board)
 - [Contributing](#contributing)
 - [Stretch Goals](#stretch-goals)
 
@@ -137,6 +138,13 @@ For Articles
 For Weather
 
 <img width="377" alt="Screenshot 2025-02-21 at 11 18 41 AM" src="https://github.com/user-attachments/assets/1902430b-cf4b-478b-b62c-a99a7cc4e7ce" />
+
+## Drawing Board
+
+[Trello Board](https://trello.com/b/SiEM9n7u/news-final-project)
+
+[Final Pitch](https://docs.google.com/document/d/1krUFtzfat2If8fCW_BF1CRBsfTgYC-25NKPr6wvZ73U/edit?usp=sharing)
+
 
 ## Contributing
 
