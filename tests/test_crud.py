@@ -182,15 +182,17 @@ def test_sentiment_and_summary_success(client):
 
 # Test unexpected error during AI sentiment + summary generation
 def test_sentiment_and_summary_unexpected_error(client):
+    # Patch to simulate an exception from the AI function
     with patch("app.get_sentiment_and_summary", side_effect=Exception("Something went wrong")):
+        # Provide mock JSON data simulating an article with a title and content
         response = client.post("/api/sentiment-and-summary", json={
             "title": "Test Title",
             "content": "Test content of the article."
         })
 
-        assert response.status_code == 500
-        data = response.get_json()
-        assert "error" in data
+        assert response.status_code == 500 # Expect internal server error
+        data = response.get_json() # Parse the response
+        assert "error" in data # Ensure error field exists in response
 
 def test_sentiment_and_summary_article_not_found(client):
     mock_result = {
