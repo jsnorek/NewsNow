@@ -34,11 +34,17 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 ## API Setup
 [Back to Contents](#contents)
 
-This weather app uses the OpenWeatherMap API to pull the current weather. The OpenWeatherMap API needed for this project is free to use if you sign up for a student account.
+### OpenWeatherMap API
+This app uses the OpenWeatherMap API to pull the current weather. The OpenWeatherMap API needed for this project is free to use if you sign up for a student account.
 
 https://openweathermap.org/api
 
 Registration for an API key is neccessary. To do this, you must sign up for an account and provide student details. Once approved, log in and you can find you key under "My API keys".
+
+### OpenAI API
+This app also uses the OpenAI API to generate article summaries and assign sentiment. You can sign up for an account to get an API key and view API documentation here: https://platform.openai.com/docs/api-reference/introduction
+
+An account is necessary, and you may need to purchase additional credits to run the API.
 
 ## Installation
 [Back to Contents](#contents)
