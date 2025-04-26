@@ -188,7 +188,9 @@
         {% if community_articles %}
             {% for article in community_articles %}
                 <div class="bg-white shadow-md rounded px-6 py-4 mb-4">
+                    <p class="text-sm text-gray-500 italic mb-1">@{{ article.username }}</p>
                     <h3 class="text-lg font-semibold">{{ article.title }}</h3>
+                    <p class="text-text">{{ article.author }}</p>
                     <p class="text-text">{{ article.content }}</p>
                     <a href="{{ article.link }}" class="text-blue-500 hover:underline">Read more</a>
                 </div>
