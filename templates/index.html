@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Articles</title>
+    <title>NewsNow</title>
 
     <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
@@ -46,16 +46,28 @@
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} mb-4 p-3 shadow-md rounded-md bg-[#C44040]">
-                    <p class="font-semibold text-white">{{ message }}</p>
-                </div>
-            {% endfor %}
+            <div class="my-4">
+                {% for category, message in messages %}
+                <div class="
+                alert px-4 py-2 rounded-md text-sm mb-2
+                {% if category == 'success' %}
+                    bg-green-500 text-white
+                {% elif category == 'error' %}
+                    bg-red-500 text-white
+                {% elif category == 'info' %}
+                    bg-yellow-500 text-black
+                {% else %}
+                    bg-blue-500 text-white
+                {% endif %}
+                ">
+                {{ message }}
+                {% endfor %}
+            </div>
         {% endif %}
     {% endwith %}
 
     <!-- Search Bar -->
-    <section class="mb-8">
+    <section class="mb-4">
         <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
             <a href="/">
                 <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-32 h-32">
@@ -70,6 +82,11 @@
             
             <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
         </form>
+    </section>
+
+    <!-- Website Header -->
+    <section class="mb-10">
+        <h1 class="text-4xl font-heading font-semibold text-text">NewsNow</h1>
     </section>
 
     <!-- Article Action Buttons -->
@@ -202,7 +219,7 @@
         <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
             <div>
                 <label for="headline" class="block text-lg">Headline:</label>
-                <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="text" id="headline" name="headline" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
                 <label for="summary" class="block text-lg">Summary:</label>
@@ -210,7 +227,7 @@
             </div>
             <div>
                 <label for="link" class="block text-lg">Link:</label>
-                <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="url" id="link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
 
             <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
@@ -223,11 +240,11 @@
         <form action="{{ url_for('add_community_article') }}" method="post" class="space-y-4">
             <div>
                 <label for="username" class="block text-lg">Username:</label>
-                <input type="text" id="username" name="username" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="text" id="username" name="username" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
                 <label for="title" class="block text-lg">Title:</label>
-                <input type="text" id="title" name="title" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="text" id="title" name="title" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
                 <label for="content" class="block text-lg">Content:</label>
@@ -235,11 +252,11 @@
             </div>
             <div>
                 <label for="author" class="block text-lg">Author:</label>
-                <input type="text" id="author" name="author" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="text" id="author" name="author" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
                 <label for="link" class="block text-lg">Link:</label>
-                <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
+                <input type="url" id="link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
 
             <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
@@ -454,6 +471,63 @@
             unfilterArticlesButton.classList.add('hidden');
             filterNegativeArticlesButton.classList.remove('hidden');
         };
+
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                const headline = form.querySelector('[name="headline"]');
+                const summary = form.querySelector('[name="summary"]');
+                const link = form.querySelector('[name="link"]');
+                const title = form.querySelector('[name="title"]');
+                const content = form.querySelector('[name="content"]');
+                const username = form.querySelector('[name="username"]');
+                const author = form.querySelector('[name="author"]');
+
+                // For news articles
+                if (headline && headline.value.trim().length < 5) {
+                    alert("Headline must be at least 5 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (summary && summary.value.trim().length > 0 && summary.value.trim().length < 20) {
+                    alert("If provided, summary should be at least 20 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                // For community articles
+                if (title && title.value.trim().length < 5) {
+                    alert("Title must be at least 5 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (content && content.value.trim().length > 0 && content.value.trim().length < 30) {
+                    alert("If provided, content should be at least 30 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (username && username.value.trim().length < 3) {
+                    alert("Username must be at least 3 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (author && author.value.trim().length < 3) {
+                    alert("Author must be at least 3 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                // For all forms with links
+                if (link && !link.value.startsWith("http")) {
+                    alert("Please enter a valid URL starting with http or https.");
+                    e.preventDefault();
+                    return;
+                }
+            });
+        });
 
     </script>
 </body>
