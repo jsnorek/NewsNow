@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Articles</title>
+    <title>NewsNow</title>
 
     <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
@@ -67,7 +67,7 @@
     {% endwith %}
 
     <!-- Search Bar -->
-    <section class="mb-8">
+    <section class="mb-4">
         <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center">
             <a href="/">
                 <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-32 h-32">
@@ -82,6 +82,11 @@
             
             <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
         </form>
+    </section>
+
+    <!-- Website Header -->
+    <section class="mb-10">
+        <h1 class="text-4xl font-heading font-semibold text-text">NewsNow</h1>
     </section>
 
     <!-- Article Action Buttons -->
