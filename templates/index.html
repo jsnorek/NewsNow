@@ -73,7 +73,7 @@
                 <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-24 md:w-32 h-auto">
             </a>
             <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center w-full">
-                <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
+                <input type="text" name="query" placeholder="Search articles" aria-label="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
                 
                 <label for="search_type" class="ml-2">Search Type:</label>
                 <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
@@ -259,8 +259,8 @@
                 <input type="text" id="author" name="author" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
             <div>
-                <label for="link" class="block text-lg">Link:</label>
-                <input type="url" id="link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
+                <label for="community-link" class="block text-lg">Link:</label>
+                <input type="url" id="community-link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
             </div>
 
             <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
