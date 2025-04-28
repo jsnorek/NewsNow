@@ -42,16 +42,16 @@ class Weather(Base): # New class that inherits from Base to map to database tabl
     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc)) # Defines column named last_updated using a callable lambda function to dynamically assign a default value determined at runtime
 
 # Define the CommunityArticles table
-class CommunityArticle(Base):
-    __tablename__ = 'community_articles'
-    id = Column(Integer, primary_key=True)
-    username = Column(Text, nullable=False)
-    title = Column(String, nullable=False)
-    content = Column(Text, nullable=False)
-    link = Column(Text, nullable=False)
-    author = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+class CommunityArticle(Base): # New class that inherits from Base to map to a database table
+    __tablename__ = 'community_articles' # Specifies the name of the database table
+    id = Column(Integer, primary_key=True) # Defines column named id which is an integer and primary key
+    username = Column(Text, nullable=False) # Stores the username of the community member, required field
+    title = Column(String, nullable=False) # Stores the title of the community article, required field
+    content = Column(Text, nullable=False) # Stores the main content/body of the community article, required field
+    link = Column(Text, nullable=False) # Stores an external reference link related to the article, required field
+    author = Column(String, nullable=True) # Optionally stores the author's name (can be null)
+    created_at = Column(DateTime, default=datetime.utcnow) # Records the timestamp when the article is created
+    updated_at = Column(DateTime, default=datetime.utcnow) # Records the timestamp when the article is last updated
 
 # Create table if it doesn't exist
 Base.metadata.create_all(engine)
