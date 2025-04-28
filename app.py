@@ -280,36 +280,38 @@ def reindex():
 @app.route('/weather_chart')
 def weather_chart():
     try:
-        # Query weather data
+        # Query weather data from the database, ordered by the last updated timestamp
         weather_entries = session.query(Weather).order_by(Weather.last_updated).all()
 
+        # Check if there is any weather data available
         if not weather_entries:
-            return "No weather data available.", 404
+            return "No weather data available.", 404 # Return a 404 error if no data is found
 
-        # Extract data
-        dates = [entry.last_updated for entry in weather_entries]
-        temps = [entry.temp for entry in weather_entries]
+        # Extract the date and temperature data from the queried weather entries
+        dates = [entry.last_updated for entry in weather_entries] # List of dates
+        temps = [entry.temp for entry in weather_entries] # Corresponding temperatures
 
-        # Create a plot
-        plt.figure(figsize=(8, 4))
-        plt.plot(dates, temps, marker='o', linestyle='-', color='b', label='Temperature')
-        plt.xlabel('Date')
-        plt.ylabel('Temperature (°C)')
-        plt.title('Weather Temperature Trends for Sonoma')
-        plt.legend()
-        plt.xticks(rotation=45)
-        plt.tight_layout()
+        # Create a line chart to visualize the temperature trends
+        plt.figure(figsize=(8, 4)) # Set the figure size
+        plt.plot(dates, temps, marker='o', linestyle='-', color='b', label='Temperature') # Plot the temperatures with markers and a blue line
+        plt.xlabel('Date') # Label the x-axis
+        plt.ylabel('Temperature (°F)') # Label the y-axis
+        plt.title('Weather Temperature Trends for Sonoma') # Add a title to the chart
+        plt.legend() # Add a legend for the plot
+        plt.xticks(rotation=45) # Rotate the x-axis labels for better readability
+        plt.tight_layout() # Adjust layout to prevent label overlap
 
         # Save plot to a buffer
-        img = io.BytesIO()
-        plt.savefig(img, format='png')
-        img.seek(0)
+        img = io.BytesIO() # Create a bytes buffer to hold the image
+        plt.savefig(img, format='png') # Save the plot as a PNG image to the buffer
+        img.seek(0) # Move the buffer's pointer to the beginning
         plt.close()  # Close the plot to free memory
 
         # Return the image as a response
-        return Response(img.getvalue(), mimetype='image/png')
+        return Response(img.getvalue(), mimetype='image/png') # Set the response MIME type to image/png
 
     except Exception as e:
+        # Log any errors that occur and return a 500 internal server error response
         print(f"Error generating weather chart: {e}")
         return "Failed to generate weather chart.", 500
 
