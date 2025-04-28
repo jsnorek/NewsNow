@@ -332,6 +332,7 @@ def weather_chart():
 #         print(f"Error generating sentiment and summary: {e}")
 #         return jsonify({"error": "Internal server error"}), 500
 
+# Route to call and save article sentiment and summary from OpenAI API function
 @app.route('/api/sentiment-and-summary', methods=['POST'])
 def sentiment_and_summary():
     data = request.get_json()
