@@ -71,9 +71,11 @@ python -c "from models import Base, engine; Base.metadata.create_all(engine)"
 ```
 FLASK_ENV=development
 DATABASE_URL=your_database_url
+DEFAULT_CITY=your_default_city
 NEWS_SITE_USERNAME=your_login_email
 NEWS_SITE_PASSWORD=your_login_password
 WEATHER_API_KEY=your_weather_api_key
+OPENAI_API_KEY
 ```
 
 **Sign up for an account on** [npr.org](https://www.npr.org/login) to get your NEWS_SITE_USERNAME and NEWS_SITE_PASSWORD. These credentials are used to scrape news articles from the site.
@@ -87,13 +89,14 @@ python -c "from models import
 create_or_open_index;
 create_or_open_index();
 ```
+This will create an indexdir/ folder containing your Whoosh search index.
 
 5. Run application
 ```
 python app.py
 ```
 
-And then use the link to open in your browser.
+And then use the link http://127.0.0.1:5000/ after starting the server to open in your browser.
 
 ## Using Search
 [Back to Contents](#contents)
@@ -143,6 +146,7 @@ The deployment process includes:
 - Implemented Whoosh full-text search functionalities for advanced searching
 - Learned to create simple but effective data visualization
 - Practiced deployment with Render
+- Practiced practically revamping and restructuring an existing project
 
 ### Example of database schema
 [Back to Contents](#contents)
