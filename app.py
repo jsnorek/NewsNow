@@ -50,7 +50,7 @@ def index():
         community_articles = session.query(CommunityArticle).order_by(CommunityArticle.created_at.desc()).all()
         
         # Fetch weather data
-        weather_data = session.query(Weather).first()
+        weather_data = session.query(Weather).order_by(Weather.last_updated.desc()).first()
         # Returns rendered HTML template and passes news_articles to template as articles
         return render_template(
             'index.html', articles=news_articles, weather=weather_data, community_articles=community_articles,
