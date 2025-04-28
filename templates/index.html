@@ -456,8 +456,10 @@
             });
         });
         
+        // Handles hiding articles with a negative sentiment 
         function filterNegativeArticles() {
             const articles = document.querySelectorAll('.news-article');
+            // Checks each article and hides it if it has a negative sentiment
             articles.forEach(article => {
                 const sentiment = article.dataset.sentiment;
                 if (sentiment && sentiment.toLowerCase() === 'negative') {
