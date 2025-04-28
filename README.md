@@ -2,6 +2,8 @@
 
 NewsNow delivers a daily news and weather feed while allowing users to filter articles based on tone, ensuring a stress-free and tailored reading experience.
 
+![ScreenRecording2025-04-28at3 06 40PM-ezgif com-optimize](https://github.com/user-attachments/assets/bd0dfd5a-85ab-4884-9135-c91e221c646e)
+
 ## Contents
 - [Features](#features)
 - [API Setup](#api-setup)
@@ -138,9 +140,12 @@ The deployment process includes:
 3. Ensuring dependencies are included in `requirements.txt` for Render to install
 4. Ensuring your config.py file is set up correctly to distinguish between production and local development
 
-## Learnings from Building this Application
+## Reflection on Building this Application
 [Back to Contents](#contents)
 
+It was really interesting to go back and reinvent a past project. When you aren't starting from scratch there are different factors to consider when re-imagining the project, like how to recycle/alter features to fit in with the new vision instead of just building from the ground up.
+
+Additional Learnings:
 - Deepened understanding of handling API calls, forms, and session management
 - Practiced database management including structuring and querying a database
 - Implemented Whoosh full-text search functionalities for advanced searching
@@ -154,6 +159,11 @@ The deployment process includes:
 For Articles
 
 <img width="1103" alt="Screenshot 2025-02-21 at 11 17 46 AM" src="https://github.com/user-attachments/assets/653233ca-3a82-4fb8-906e-b76c181b8964" />
+
+For Community Articles
+
+<img width="890" alt="Screenshot 2025-04-28 at 3 12 41 PM" src="https://github.com/user-attachments/assets/6f05475b-803e-4114-b19b-d4fd8204d1db" />
+
 
 For Weather
 
