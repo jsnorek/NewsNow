@@ -383,18 +383,23 @@ def sentiment_and_summary():
 # Route to call and save only article summary from OpenAI API function    
 @app.route('/api/summary', methods=['POST'])
 def summary():
+    # Extract JSON data from the incoming request
     data = request.get_json()
-    article_title = data.get('title')
-    article_content = data.get('content')
+    article_title = data.get('title') # Get the article title from the request
+    article_content = data.get('content') # Get the article content from the request
 
     try:
+        # Use AI to generate a summary for the article
         result = get_summary(article_title, article_content)
 
-        if result:
+        if result: # If the AI provides a summary
+            # Return the summary as a JSON response
             return jsonify({"summary": result}), 200
         else:
+            # Handle incomplete AI responses
             return jsonify({"error": "Incomplete AI response"}), 500
     except Exception as e:
+        # Log errors and return an internal server error response
         print(f"Error generating summary: {e}")
         return jsonify({"error": "Internal server error"}), 500
 
