@@ -249,6 +249,7 @@ def delete_article(id):
         flash("An error occurred while deleting the article. Please try again.", "error")
     return redirect(url_for('index')) # Redirects to the homepage
 
+# Route to clear existing search index and rebuild the index with new articles
 @app.route('/reindex', methods=['GET'])
 def reindex():
     index_dir = "indexdir"
