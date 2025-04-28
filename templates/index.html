@@ -481,6 +481,7 @@
             filterNegativeArticlesButton.classList.remove('hidden');
         };
 
+        // Handles validation for article form submissions for both news and community articles
         document.querySelectorAll("form").forEach(form => {
             form.addEventListener("submit", function (e) {
                 const headline = form.querySelector('[name="headline"]');
