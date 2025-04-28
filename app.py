@@ -252,29 +252,32 @@ def delete_article(id):
 # Route to clear existing search index and rebuild the index with new articles
 @app.route('/reindex', methods=['GET'])
 def reindex():
+    # Specify the directory where the index files are stored
     index_dir = "indexdir"
 
     # Delete the index directory to remove duplicates
-    if os.path.exists(index_dir):
-        shutil.rmtree(index_dir)
-        print("Index deleted.")
+    if os.path.exists(index_dir): # Check if the index directory exists
+        shutil.rmtree(index_dir) # Remove the directory and all its contents
+        print("Index deleted.") # Log confirmation of deletion
 
     # Recreate the index
-    ix = create_or_open_index()  
-    writer = ix.writer()
+    ix = create_or_open_index() # Create a new index or open an existing one
+    writer = ix.writer() # Initialize the writer object to add documents to the index
 
     # Add fresh articles to the index
-    articles = session.query(NewsArticle).all()
-    for article in articles:
+    articles = session.query(NewsArticle).all() # Retrieve all articles from the database
+    for article in articles: # Iterate over each article
         writer.add_document(
-            id=str(article.id),
-            headline=article.headline,
-            summary=article.summary or '',
-            link=article.link
+            id=str(article.id), # Add the article ID as a unique identifier
+            headline=article.headline, # Add the article headline
+            summary=article.summary or '', # Include the summary or default to an empty string
+            link=article.link # Add the article link
         )
 
-    writer.commit()
+    writer.commit() # Commit changes to save the refreshed index
     print("Reindexing completed.")
+    
+    # Redirect the user to the homepage after reindexing
     return redirect(url_for('index'))
 
 # Route for generating the weather chart
