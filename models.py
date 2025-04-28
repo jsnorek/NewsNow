@@ -41,6 +41,7 @@ class Weather(Base): # New class that inherits from Base to map to database tabl
     description = Column(String, nullable=False) # Defines column named description
     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc)) # Defines column named last_updated using a callable lambda function to dynamically assign a default value determined at runtime
 
+# Define the CommunityArticles table
 class CommunityArticle(Base):
     __tablename__ = 'community_articles'
     id = Column(Integer, primary_key=True)
