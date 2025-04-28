@@ -311,26 +311,6 @@ def weather_chart():
     except Exception as e:
         print(f"Error generating weather chart: {e}")
         return "Failed to generate weather chart.", 500
-    
-# @app.route('/api/sentiment-and-summary', methods=['POST'])
-# def sentiment_and_summary():
-#     data = request.get_json()
-#     article_title = data.get('title')
-#     article_content = data.get('content')
-
-#     try:
-#         result = get_sentiment_and_summary(article_title, article_content)
-
-#         if result["summary"] and result["sentiment"]:
-#             return jsonify({
-#                 "summary": result["summary"],
-#                 "sentiment": result["sentiment"]
-#             })
-#         else:
-#             return jsonify({"error": "Incomplete AI response"}), 500
-#     except Exception as e:
-#         print(f"Error generating sentiment and summary: {e}")
-#         return jsonify({"error": "Internal server error"}), 500
 
 # Route to call and save article sentiment and summary from OpenAI API function
 @app.route('/api/sentiment-and-summary', methods=['POST'])
