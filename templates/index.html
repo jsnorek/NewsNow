@@ -468,11 +468,12 @@
             });
         };
 
+        //  Handles re-inserting negative articles back into the displayed list
         function unfilterArticles() {
             const articles = document.querySelectorAll('.news-article');
             const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button"); 
             const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
-
+            // For each article, remove any hidden class
             for (const article of articles) {
                 article.classList.remove('hidden');
             }
