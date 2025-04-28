@@ -178,11 +178,11 @@ def add_community_article():
     if request.method == 'POST': # Checks if the request method is POST, indicating form submission
         try:
             # Retrieves the values from the submitted form data
-            username = request.form['username']
-            title = request.form['title']
-            content = request.form['content']
-            link = request.form['link']
-            author = request.form['author']
+            username = request.form['username'] # Username of the community member submitting the article
+            title = request.form['title'] # Title of the community article
+            content = request.form['content'] # Main content/body of the article
+            link = request.form['link'] # Reference link or additional resource URL
+            author = request.form['author'] # Author of the content
 
             # Checks if any required fields are missing; if so, it returns an error message
             if not username or not title or not content or not link or not author:
@@ -191,18 +191,18 @@ def add_community_article():
             
             # Creates a new CommunityArticle object with the provided data
             new_article = CommunityArticle(username=username, title=title, content=content, link=link, author=author)
-            session.add(new_article)
-            session.commit()
+            session.add(new_article) # Adds the new article to the database session
+            session.commit() # Commits the session to save the new article in the database
 
             # Flash a success message upon successful addition of the article
             flash("Community article added successfully!", "success")
-            return redirect(url_for('index'))
+            return redirect(url_for('index')) # Redirects the user to the homepage
         
         except Exception as e:
-            session.rollback()
-            logging.error(f"Error adding community article: {e}")
-            flash("Failed to add article. Please try again.", "error")
-            return render_template('add_community_article.html')
+            session.rollback() # Rolls back the session to prevent partial commits
+            logging.error(f"Error adding community article: {e}") # Logs the error for debugging purposes
+            flash("Failed to add article. Please try again.", "error") # Displays an error message to the user
+            return render_template('add_community_article.html')  # Re-renders the add community article form
         
     return render_template('add_community_article.html') # If the request method is GET, render the add_community_article.html template
 
