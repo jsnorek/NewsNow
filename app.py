@@ -379,7 +379,8 @@ def sentiment_and_summary():
         # Log errors and return an internal server error response
         print(f"Error generating sentiment and summary: {e}")
         return jsonify({"error": "Internal server error"}), 500
-    
+
+# Route to call and save only article summary from OpenAI API function    
 @app.route('/api/summary', methods=['POST'])
 def summary():
     data = request.get_json()
