@@ -175,22 +175,26 @@ def add_article():
 # Route to add new community articles
 @app.route('/add_community', methods=['GET', 'POST'])
 def add_community_article():
-    if request.method == 'POST':
+    if request.method == 'POST': # Checks if the request method is POST, indicating form submission
         try:
+            # Retrieves the values from the submitted form data
             username = request.form['username']
             title = request.form['title']
             content = request.form['content']
             link = request.form['link']
             author = request.form['author']
 
+            # Checks if any required fields are missing; if so, it returns an error message
             if not username or not title or not content or not link or not author:
                 flash("All fields are required", "error")
                 return render_template('add_community_article.html')
             
+            # Creates a new CommunityArticle object with the provided data
             new_article = CommunityArticle(username=username, title=title, content=content, link=link, author=author)
             session.add(new_article)
             session.commit()
 
+            # Flash a success message upon successful addition of the article
             flash("Community article added successfully!", "success")
             return redirect(url_for('index'))
         
@@ -200,7 +204,7 @@ def add_community_article():
             flash("Failed to add article. Please try again.", "error")
             return render_template('add_community_article.html')
         
-    return render_template('add_community_article.html')
+    return render_template('add_community_article.html') # If the request method is GET, render the add_community_article.html template
 
 # Route to edit an article based on id
 @app.route('/edit/<int:id>', methods = ['GET', 'POST'])
