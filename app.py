@@ -276,6 +276,7 @@ def reindex():
     print("Reindexing completed.")
     return redirect(url_for('index'))
 
+# Route for generating the weather chart
 @app.route('/weather_chart')
 def weather_chart():
     try:
