@@ -116,10 +116,10 @@
     <!-- Weather Widget -->
     <div class="weather-widget my-6 p-4 bg-accent text-white shadow-md rounded-md">
         {% if weather %}
-            <p class="text-xl font-semibold">{{weather.city}}</p>
-            <p class="text-3xl font-bold">{{weather.temp}}°F</p>
-            <p>{{weather.description}}</p>
-            <p>{{weather.icon}}</p>
+            <p class="text-xl font-semibold">{{ weather.city }}</p>
+            <p class="text-3xl font-bold">{{ weather.temp | int }}°F</p>
+            <p>{{ weather.description }}</p>
+            <p>{{ weather.icon }}</p>
         {% else %}
             <p>Weather data unavailable</p>
         {% endif %}
