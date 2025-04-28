@@ -335,11 +335,12 @@ def weather_chart():
 # Route to call and save article sentiment and summary from OpenAI API function
 @app.route('/api/sentiment-and-summary', methods=['POST'])
 def sentiment_and_summary():
+    # Extract JSON data from the incoming request
     data = request.get_json()
-    article_title = data.get('title')
-    article_content = data.get('content')
+    article_title = data.get('title') # Get the article title from the request
+    article_content = data.get('content') # Get the article content from the request
 
-    print(f"Received Article: {article_title}")
+    print(f"Received Article: {article_title}") # Debugging output to confirm received title
 
     try:
         # Get sentiment and summary from AI
@@ -348,11 +349,11 @@ def sentiment_and_summary():
         print(f"AI Summary: {result['summary']}")  # Debugging output
         print(f"Sentiment: {result['sentiment']}")  # Debugging output
 
-        if result["summary"] and result["sentiment"]:
+        if result["summary"] and result["sentiment"]: # Verify AI provided both sentiment and summary
             # Find the article in the database by title
             article = session.query(NewsArticle).filter_by(headline=article_title).first()
 
-            if article:
+            if article: # If the article exists in the database
                 print("Updating article in the database...")
                 # Update the article with the sentiment and summary
                 article.ai_summary = result["summary"]
@@ -362,16 +363,20 @@ def sentiment_and_summary():
                 session.commit()
                 print("Database updated successfully!")
 
+                # Return the AI-generated summary and sentiment as a JSON response
                 return jsonify({
                     "ai_summary": result["summary"],
                     "sentiment": result["sentiment"]
                 })
             else:
+                # If the article is not found, return an error message
                 print("Error: Article not found in database.")
                 return jsonify({"error": "Article not found"}), 404
         else:
+            # Handle incomplete AI responses
             return jsonify({"error": "Incomplete AI response"}), 500
     except Exception as e:
+        # Log errors and return an internal server error response
         print(f"Error generating sentiment and summary: {e}")
         return jsonify({"error": "Internal server error"}), 500
     
