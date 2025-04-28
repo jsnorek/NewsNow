@@ -172,6 +172,7 @@ def add_article():
 
     return render_template('add_article.html') # If the request method is GET, it renders the add_article.html template
 
+# Route to add new community articles
 @app.route('/add_community', methods=['GET', 'POST'])
 def add_community_article():
     if request.method == 'POST':
