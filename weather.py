@@ -19,7 +19,7 @@ def get_weather():
         response = requests.get(url, timeout=10)
         response.raise_for_status() # Raises HTTP errors for bad responses
 
-         # Parse the response data 
+        # Parse the response data 
         data = response.json()
         # Extract relevant weather data
         weather_info = {
