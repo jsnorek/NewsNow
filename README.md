@@ -8,11 +8,12 @@ NewsNow delivers a daily news and weather feed while allowing users to filter ar
 - [Features](#features)
 - [API Setup](#api-setup)
 - [Installation](#installation)
+- [Testing](#testing)
 - [Using Search](#using-search)
 - [Reindexing Search](#reindexing-search-data-if-needed)
 - [Weather Data Visualization](#weather-data-visualization)
 - [Deployment Process](#deployment-process)
-- [Learnings](#learnings-from-building-this-application)
+- [Learnings](#reflection-on-building-this-application)
 - [Database Schema Example](#example-of-database-schema)
 - [Drawing Board](#drawing-board)
 - [Contributing](#contributing)
@@ -57,17 +58,24 @@ git clone git@github.com:jsnorek/e-commerce-product-aggregator.git
 cd e-commerce-product-aggregator
 ```
 
-1. Install dependencies
+2. Create and activate virtual environment
+
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies
 ```
 pip install -r requirements.txt
 ```
 
-2. Set up database
+4. Set up database
 ```
 python -c "from models import Base, engine; Base.metadata.create_all(engine)"
 ```
 
-3. Set up environment variables
+5. Set up environment variables
    - Create a .env file in the root of the project
    - Add the following values to the .env file
 ```
@@ -83,7 +91,7 @@ OPENAI_API_KEY
 **Sign up for an account on** [npr.org](https://www.npr.org/login) to get your NEWS_SITE_USERNAME and NEWS_SITE_PASSWORD. These credentials are used to scrape news articles from the site.
 	•	Make sure to replace your_npr_username, your_npr_password, and your_weather_api_key with your actual credentials and API key.
 
-4. Initialize the Whoosh Search Index
+6. Initialize the Whoosh Search Index
 
 Before using the search functionality, create the search index
 ```
@@ -93,12 +101,20 @@ create_or_open_index();
 ```
 This will create an indexdir/ folder containing your Whoosh search index.
 
-5. Run application
+7. Run application
 ```
 python app.py
 ```
 
 And then use the link http://127.0.0.1:5000/ after starting the server to open in your browser.
+
+## Testing
+[Back to Contents](#contents)
+
+To run test coverage report, run:
+```
+pytest --cov=your_module --cov-report=html
+```
 
 ## Using Search
 [Back to Contents](#contents)
