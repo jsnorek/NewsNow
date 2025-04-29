@@ -1,7 +1,7 @@
 # Database setup
 
 # from ast import Or
-from sqlalchemy import DateTime, Float, create_engine, Column, Integer, String
+from sqlalchemy import DateTime, Float, Text, create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 # from config import DATABASE_URL, DEFAULT_CITY
 from config import Config
@@ -27,6 +27,8 @@ class NewsArticle(Base): # New class that inherits from Base to map to database 
     id = Column(Integer, primary_key=True)  # Defines column named id which is an integer and primary key
     headline = Column(String, nullable=False) # Defines column to store strings for article headlines
     summary = Column(String, nullable=True) # Defines column to store strings for summary of the articles
+    sentiment = Column(String, nullable=True)
+    ai_summary = Column(String, nullable=True)
     link = Column(String, nullable=False) # Defines column to store strings for urls of the articles
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))  # Track updates
 
@@ -38,6 +40,18 @@ class Weather(Base): # New class that inherits from Base to map to database tabl
     city = Column(String, nullable=False, default=Config.DEFAULT_CITY) # Defines column named city and the default is DEFAULT_CITY
     description = Column(String, nullable=False) # Defines column named description
     last_updated = Column(DateTime, default=lambda: datetime.now(timezone.utc)) # Defines column named last_updated using a callable lambda function to dynamically assign a default value determined at runtime
+
+# Define the CommunityArticles table
+class CommunityArticle(Base): # New class that inherits from Base to map to a database table
+    __tablename__ = 'community_articles' # Specifies the name of the database table
+    id = Column(Integer, primary_key=True) # Defines column named id which is an integer and primary key
+    username = Column(Text, nullable=False) # Stores the username of the community member, required field
+    title = Column(String, nullable=False) # Stores the title of the community article, required field
+    content = Column(Text, nullable=False) # Stores the main content/body of the community article, required field
+    link = Column(Text, nullable=False) # Stores an external reference link related to the article, required field
+    author = Column(String, nullable=True) # Optionally stores the author's name (can be null)
+    created_at = Column(DateTime, default=datetime.utcnow) # Records the timestamp when the article is created
+    updated_at = Column(DateTime, default=datetime.utcnow) # Records the timestamp when the article is last updated
 
 # Create table if it doesn't exist
 Base.metadata.create_all(engine)

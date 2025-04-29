@@ -3,52 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Articles</title>
+    <title>NewsNow</title>
+
+    <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5F4F5C',
+                        secondary: '#E8F5E9',
+                        accent: '#5869E4',
+                        background: '#F6F8FA',
+                        text: '#333333',
+                    },
+                    fontFamily: {
+                        body: ['Roboto', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+
 </head>
-<body class="font-sans bg-gray-50 p-10">
+<body class="bg-background text-text font-body p-10">
+    <!-- Force Tailwind CDN to include custom classes -->
+    <div class="hidden">
+    bg-background text-text font-body font-heading
+    bg-primary text-primary border-primary
+    bg-secondary text-secondary border-secondary
+    bg-accent text-accent
+    hover:bg-[#7B6E7B] active:bg-[#6E616E]
+    hover:bg-[#F3E8F4] active:bg-[#E1D1E2]
+    hover:text-[#6B75F2] active:text-[#5662E2]
+    </div>
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" mb-4 p-3 rounded-md">
-                    <p class="font-semibold">{{ message }}</p>
-                </div>
-            {% endfor %}
+            <div class="my-4">
+                {% for category, message in messages %}
+                <div class="
+                alert px-4 py-2 rounded-md text-sm mb-2
+                {% if category == 'success' %}
+                    bg-green-500 text-white
+                {% elif category == 'error' %}
+                    bg-red-500 text-white
+                {% elif category == 'info' %}
+                    bg-yellow-500 text-black
+                {% else %}
+                    bg-blue-500 text-white
+                {% endif %}
+                ">
+                {{ message }}
+                {% endfor %}
+            </div>
         {% endif %}
     {% endwith %}
 
     <!-- Search Bar -->
-<form action="/search" method="GET" class="mb-6">
-    <input type="text" name="query" placeholder="Search articles" class="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-300" required>
-    
-    <label for="search_type" class="ml-2">Search Type:</label>
-    <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
-        <option value="headline_summary">Search in Headline & Summary</option>
-        <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
-    </select>
-    
-    <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Search</button>
-</form>
+    <section class="mb-4">
+        <div class="flex flex-col md:flex-row gap-4 md:items-center">
+            <a href="/">
+                <img src="/static/images/newsnow_logo.PNG" alt="NewsNow logo" class="w-24 md:w-32 h-auto">
+            </a>
+            <form action="/search" method="GET" class="flex flex-col md:flex-row gap-4 md:items-center w-full">
+                <input type="text" name="query" placeholder="Search articles" aria-label="Search articles" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent w-full md:w-1/2" required>
+                
+                <label for="search_type" class="ml-2">Search Type:</label>
+                <select name="search_type" id="search_type" class="p-2 border border-gray-300 rounded-md">
+                    <option value="headline_summary">Search in Headline & Summary</option>
+                    <option value="wildcard_phrase">Search with Wildcards/Phrases</option>
+                </select>
+                
+                <button type="submit" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">Search</button>
+            </form>
+        </div>
+    </section>
 
-    <!-- Scrape Latest Articles Button -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <form action="/scrape" method="POST">
-        <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Scrape Latest Articles</button>
-    </form>
+    <!-- Website Header -->
+    <section class="mb-10">
+        <h1 class="text-4xl font-heading font-semibold text-text">NewsNow</h1>
+    </section>
+
+    <!-- Article Action Buttons -->
+    <section class="flex flex-wrap gap-4 mb-8">
+
+        <!-- Scrape Latest Articles Button -->
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <form action="/scrape" method="POST">
+            <button type="submit" id="scrape-articles-button" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Scrape Latest Articles</button>
+        </form>
+
+        <!-- Setiment and Summary Button -->
+        <button onclick="analyzeVisibleArticles()" id="analyze-articles-button" class="bg-primary text-white py-2 px-4 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all">
+            Analyze Visible Articles
+        </button>
+
+        <!-- Filter Negative Articles Button  -->
+        <button onclick="filterNegativeArticles()" class="hidden bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all" id="filter-negative-articles-button">Filter Negative Articles</button>
+
+        <!-- Unfilter Negative Articles Button  -->
+        <button onclick="unfilterArticles()" class="hidden bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all" id="unfilter-articles-button">Show All Articles</button>
+
+    </section>
 
     <!-- Weather Widget -->
-    <div class="weather-widget my-6 p-4 bg-white shadow-md rounded-md">
+    <div class="weather-widget my-6 p-4 bg-accent text-white shadow-md rounded-md">
         {% if weather %}
-            <p class="text-xl font-semibold">{{weather.city}}</p>
-            <p class="text-3xl font-bold">{{weather.temp}}°F</p>
-            <p>{{weather.description}}</p>
-            <p>{{weather.icon}}</p>
+            <p class="text-xl font-semibold">{{ weather.city }}</p>
+            <p class="text-3xl font-bold">{{ weather.temp | int }}°F</p>
+            <p>{{ weather.description }}</p>
+            <p>{{ weather.icon }}</p>
         {% else %}
             <p>Weather data unavailable</p>
         {% endif %}
         <form action="/update_weather" method="POST">
-            <button type="submit" class="bg-purple-300 text-white py-1 px-3 rounded-md hover:bg-purple-400 transition-all">Refresh Weather</button>
+            <button type="submit" class="bg-secondary text-text py-1 px-3 rounded-md hover:bg-[#f5fbf6] transition-all">Refresh Weather</button>
         </form>
     </div>
 
@@ -56,59 +132,260 @@
     <img src="{{ url_for('weather_chart') }}" alt="Weather Data Chart">
 
     <!-- News Articles -->
-    <h1 class="text-4xl font-semibold mb-6"><a href="/" class="text-blue-300 hover:text-blue-400">News Articles</a></h1>
+    <section class="flex space-x-4 mb-8 border-b-2 border-gray-300">
+        <h1 id="news-tab"
+        class="tab-button text-3xl font-semibold py-2 px-4 border-b-4 border-transparent border-accent shadow-md rounded bg-white text-accent cursor-pointer">
+        News Articles</h1>
+    <h1 id="community-tab"
+        class="tab-button text-xl font-semibold py-2 px-4 border-b-4 border-transparent shadow-md rounded cursor-pointer">
+        Community News</h1>
+    </section>
     
-    {% for article in articles %}
-    <div class="news-article border-b border-gray-300 py-5">
-        <h2 class="text-xl font-semibold">
-            <a href="{{ article.link }}" target="_blank" class="text-black-600 hover:underline">{{ article.headline }}</a>
-        </h2>
-        <p class="text-gray-600">{{ article.summary }}</p>
+    <div id="news-article">
+        {% for article in articles %}
+        <div class="news-article article border-b border-gray-300 py-5"
+            data-id="{{ article.id }}"
+            data-title="{{ article.headline | escape }}"
+            data-content="{{ article.summary | escape }}"
+            data-sentiment="{{ article.sentiment }}"
+            data-ai_summary="{{ article.ai_summary }}"
+        >
+            <h2 class="text-xl font-semibold">
+                <a href="{{ article.link }}" target="_blank" class="text-primary underline hover:underline hover:text-accent">{{ article.headline }}</a>
+            </h2>
+            <p class="text-text">{{ article.summary }}</p>
 
-        <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
-            <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-700 transition-all">Edit</button>
-        </form>
+            <section class="flex flex-wrap gap-4 mb-8"> 
+                <form action="/edit/{{ article.id }}" method="GET" class="inline-block mr-3">
+                    <button type="submit" class="bg-accent text-white py-1 px-2 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all transition-all">Edit</button>
+                </form>
 
-        <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
-            <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
-        </form>
+                <form action="/delete/{{ article.id }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                    <button type="submit" class="bg-gray-500 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition-all">Delete</button>
+                </form>
+            </section>
+
+            <!-- Summary Button -->
+            <button 
+                onclick="getSummary(`{{ article.headline }}`, `{{ article.summary }}`, `{{ article.id }}`)"
+                class="bg-primary text-white py-1 px-2 rounded-md hover:bg-[#7B6E7B] active:bg-[#6E616E] transition-all"
+            >
+                Get Summary
+            </button>
+
+            <!-- <p id="sentiment-{{ article.id }}" class="mt-2 text-text"></p>
+            <p id="summary-{{ article.id }}" class="mt-2 bg-secondary text-text"></p> -->
+            <p id="sentiment-{{ article.id }}" class="mt-2 text-text hidden">
+                {% if article.sentiment %}Sentiment: {{ article.sentiment }}{% endif %}
+            </p>
+            <p id="ai_summary-{{ article.id }}" class="mt-2 bg-secondary text-text hidden">
+                {% if article.ai_summary %}Summary: {{ article.ai_summary }}{% endif %}
+            </p>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+
+    <!-- Community Articles (initially hidden) -->
+    <div id="community-articles" class="hidden">
+        {% if community_articles %}
+            {% for article in community_articles %}
+                <div class="bg-white shadow-md rounded px-6 py-4 mb-4">
+                    <p class="text-sm text-gray-500 italic mb-1">@{{ article.username }}</p>
+                    <h3 class="text-lg font-semibold">{{ article.title }}</h3>
+                    <p class="text-text">{{ article.author }}</p>
+                    <p class="text-text">{{ article.content }}</p>
+                    <a href="{{ article.link }}" class="text-blue-500 hover:underline">Read more</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No community articles found.</p>
+        {% endif %}
+    </div>
 
     <!-- Pagination -->
-    <div class="pagination mt-6 text-center">
+    <div class="pagination mt-6 text-center my-6 p-4 bg-accent shadow-md rounded-md">
         {% if page > 1 %}
-            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">First</a>
-            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Previous</a>
+            <a href="{{ url_for('index', page=1 )}}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">First</a>
+            <a href="{{ url_for('index', page=page-1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Previous</a>
         {% endif %}
         
-        <span class="font-semibold text-gray-700 mx-4">Page {{ page }} of {{ total_pages }}</span>
+        <span class="font-semibold text-white mx-4">Page {{ page }} of {{ total_pages }}</span>
         
         {% if page < total_pages %}
-            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Next</a>
-            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-blue-300 text-white rounded-md hover:bg-blue-400 transition-all">Last</a>
+            <a href="{{ url_for('index', page=page+1) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Next</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="px-4 py-2 bg-secondary text-text rounded-md border border-gray-300 hover:bg-[#f5fbf6] transition-all">Last</a>
         {% endif %}
     </div>
 
     <!-- Add New Article Form -->
-    <h2 class="text-2xl font-semibold mt-10 mb-5">Add a New Article</h2>
-    <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
-        <div>
-            <label for="headline" class="block text-lg">Headline:</label>
-            <input type="text" id="headline" name="headline" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
-        <div>
-            <label for="summary" class="block text-lg">Summary:</label>
-            <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
-        </div>
-        <div>
-            <label for="link" class="block text-lg">Link:</label>
-            <input type="url" id="link" name="link" required class="p-3 border border-gray-300 rounded-md w-full">
-        </div>
+    <div id="news-form" class="bg-secondary p-10">
+        <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a New Article</h2>
+        <form action="{{ url_for('add_article') }}" method="post" class="space-y-4">
+            <div>
+                <label for="headline" class="block text-lg">Headline:</label>
+                <input type="text" id="headline" name="headline" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="summary" class="block text-lg">Summary:</label>
+                <textarea id="summary" name="summary" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="link" class="block text-lg">Link:</label>
+                <input type="url" id="link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
 
-        <button type="submit" class="bg-pink-300 text-white py-2 px-4 rounded-md hover:bg-pink-400 transition-all">Submit Article</button>
-    </form>
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
+        </form>
+    </div>
+
+    <!-- Add New Community Article Form -->
+    <div id="community-form" class="bg-secondary p-10 hidden">
+        <h2 class="text-3xl font-semibold font-heading mt-8 mb-5">Add a Community Article</h2>
+        <form action="{{ url_for('add_community_article') }}" method="post" class="space-y-4">
+            <div>
+                <label for="username" class="block text-lg">Username:</label>
+                <input type="text" id="username" name="username" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="title" class="block text-lg">Title:</label>
+                <input type="text" id="title" name="title" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="content" class="block text-lg">Content:</label>
+                <textarea id="content" name="content" class="p-3 border border-gray-300 rounded-md w-full"></textarea>
+            </div>
+            <div>
+                <label for="author" class="block text-lg">Author:</label>
+                <input type="text" id="author" name="author" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+            <div>
+                <label for="community-link" class="block text-lg">Link:</label>
+                <input type="url" id="community-link" name="link" class="p-3 border border-gray-300 rounded-md w-full">
+            </div>
+
+            <button type="submit" class="bg-accent text-white py-2 px-4 rounded-md hover:bg-[#5264f8] active:bg-[#E1D1E2] transition-all">Submit Article</button>
+        </form>
+    </div>
+
     <script>
+        // Analyze all visible articles on the page by sending their title and content
+        // to the backend for sentiment + summary generation.
+        async function analyzeVisibleArticles() {
+            // Select all elements with the class 'article'
+            const articles = document.querySelectorAll('.article');
+            
+            // Loop through each article element
+            for (const article of articles) {
+                // Extract the article's ID, title, and content from its data attributes
+                const articleId = article.dataset.id;
+                const title = article.dataset.title;
+                const content = article.dataset.content;
+                const sentimentElement = document.getElementById(`sentiment-${articleId}`);
+                const aiSummaryElement = document.getElementById(`ai_summary-${articleId}`);
+
+                const existingSentiment = article.dataset.sentiment;
+                const existingAiSummary = article.dataset.ai_summary;
+                // Use existing data if available
+                if (existingSentiment && existingSentiment !== "None" && existingAiSummary && existingAiSummary !== "None") {
+                    sentimentElement.innerText = `Sentiment: ${existingSentiment}`;
+                    aiSummaryElement.innerText = `Summary: ${existingAiSummary}`;
+                    sentimentElement.classList.remove('hidden');
+                    aiSummaryElement.classList.remove('hidden');
+                    continue;
+                }
+
+                try {
+                    // Send a POST request to the backend API with the article info
+                    const response = await fetch('/api/sentiment-and-summary', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            title: title,
+                            content: content,
+                            article_id: articleId,
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch sentiment and summary');
+                    }
+
+                    // Parse the JSON response
+                    const data = await response.json();
+
+                    // Update DOM
+                    if (data.sentiment && data.ai_summary) {
+                        sentimentElement.innerText = `Sentiment: ${data.sentiment}`;
+                        aiSummaryElement.innerText = `Summary: ${data.ai_summary}`;
+                        sentimentElement.classList.remove('hidden');
+                        aiSummaryElement.classList.remove('hidden');
+
+                        // Also update dataset to cache it for next clicks
+                        article.dataset.sentiment = data.sentiment;
+                        article.dataset.ai_summary = data.ai_summary;
+                    }
+                    } catch (error) {
+                        console.error('Error analyzing article:', error);
+                    }
+                    }
+        };
+        
+        // Fetch both sentiment and summary for a single article
+        // async function getSentimentAndSummary(articleTitle, articleContent, articleId) {
+        //     try {
+        //         // Send a POST request to the sentiment + summary endpoint
+        //         const response = await fetch('/api/sentiment-and-summary', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({ title: articleTitle, content: articleContent })
+        //         });
+
+        //         // Parse the JSON response
+        //         const data = await response.json();
+                
+        //         // Update the page with the response from the backend
+        //         if (data.sentiment && data.summary) {
+        //             document.getElementById(`sentiment-${articleId}`).innerText = `Sentiment: ${data.sentiment}`;
+        //             document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+        //         } else {
+        //             document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
+        //             document.getElementById(`summary-${articleId}`).innerText = "Error fetching summary";
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching sentiment and summary:", error);
+        //     }
+        // };
+
+        // Fetch only the AI-generated summary for a single article
+        async function getSummary(articleTitle, articleContent, articleId) {
+            try {
+                // Send a POST request to the summary endpoint
+                const response = await fetch('api/summary', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: articleTitle, content: articleContent})
+                });
+
+                // Parse the JSON response
+                const data = await response.json();
+
+                // Update the summary section of the corresponding article
+                if(data.summary) {
+                    document.getElementById(`summary-${articleId}`).innerText = `Summary: ${data.summary}`;
+                } else {
+                    document.getElementById(`sentiment-${articleId}`).innerText = "Error fetching sentiment";
+                }
+            } catch (error) {
+                console.error("Error fetching summary:", error)
+            }
+        };
+
         // Wait for the page to load
         document.addEventListener("DOMContentLoaded", function () {
             // Select all flash messages
@@ -123,6 +400,145 @@
                 }, 5000); // 5000ms = 5 seconds
             });
         });
+
+        // Tab switch between News Articles and Community Articles
+        document.addEventListener("DOMContentLoaded", function () {
+            const newsTab = document.getElementById("news-tab");
+            const communityTab = document.getElementById("community-tab");
+            const communityForm = document.getElementById("community-form");
+            const newsArticles = document.getElementById("news-article");
+            const newsForm = document.getElementById("news-form");
+            const communityArticles = document.getElementById("community-articles");
+            const analyzeArticlesButton = document.getElementById("analyze-articles-button");
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button");
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+            const scrapeArticlesButton = document.getElementById("scrape-articles-button");
+            newsTab.addEventListener("click", function () {
+                newsArticles.classList.remove("hidden");
+                newsForm.classList.remove("hidden");
+                communityArticles.classList.add("hidden");
+                communityForm.classList.add("hidden");
+                newsTab.classList.add("text-accent", 'border-accent', 'bg-white', 'text-3xl');
+                newsTab.classList.remove("text-xl");
+                communityTab.classList.remove("text-accent", 'text-3xl', 'bg-white');
+                communityTab.classList.add("text-xl");
+                analyzeArticlesButton.classList.remove("hidden");
+                scrapeArticlesButton.classList.remove("hidden");
+            });
+            communityTab.addEventListener("click", function () {
+                communityArticles.classList.remove("hidden");
+                communityForm.classList.remove("hidden");
+                newsArticles.classList.add("hidden");
+                newsForm.classList.add("hidden");
+                communityTab.classList.remove("text-xl");
+                communityTab.classList.add("text-accent",'border-accent', 'bg-white', 'text-3xl');
+                newsTab.classList.remove("text-accent", "text-3xl", 'bg-white');
+                newsTab.classList.add("text-xl");
+                analyzeArticlesButton.classList.add("hidden");
+                filterNegativeArticlesButton.classList.add("hidden");
+                unfilterArticlesButton.classList.add("hidden");
+                scrapeArticlesButton.classList.add("hidden");
+            });
+        });
+
+        // Handles display for Analyze Articles and Filter Negative Articles buttons depending on click
+        document.addEventListener("DOMContentLoaded", function () {
+            const analyzeArticlesButton = document.getElementById("analyze-articles-button");
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button");
+            analyzeArticlesButton.addEventListener("click", function () {
+                analyzeArticlesButton.classList.add("hidden");
+                filterNegativeArticlesButton.classList.remove("hidden");
+            });
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+            filterNegativeArticlesButton.addEventListener("click", function () {
+                filterNegativeArticlesButton.classList.add("hidden");
+                unfilterArticlesButton.classList.remove("hidden");
+            });
+        });
+        
+        // Handles hiding articles with a negative sentiment 
+        function filterNegativeArticles() {
+            const articles = document.querySelectorAll('.news-article');
+            // Checks each article and hides it if it has a negative sentiment
+            articles.forEach(article => {
+                const sentiment = article.dataset.sentiment;
+                if (sentiment && sentiment.toLowerCase() === 'negative') {
+                    article.classList.add('hidden');
+                } 
+            });
+        };
+
+        //  Handles re-inserting negative articles back into the displayed list
+        function unfilterArticles() {
+            const articles = document.querySelectorAll('.news-article');
+            const filterNegativeArticlesButton = document.getElementById("filter-negative-articles-button"); 
+            const unfilterArticlesButton = document.getElementById("unfilter-articles-button");
+            // For each article, remove any hidden class
+            for (const article of articles) {
+                article.classList.remove('hidden');
+            }
+            unfilterArticlesButton.classList.add('hidden');
+            filterNegativeArticlesButton.classList.remove('hidden');
+        };
+
+        // Handles validation for article form submissions for both news and community articles
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                const headline = form.querySelector('[name="headline"]');
+                const summary = form.querySelector('[name="summary"]');
+                const link = form.querySelector('[name="link"]');
+                const title = form.querySelector('[name="title"]');
+                const content = form.querySelector('[name="content"]');
+                const username = form.querySelector('[name="username"]');
+                const author = form.querySelector('[name="author"]');
+
+                // For news articles
+                if (headline && headline.value.trim().length < 5) {
+                    alert("Headline must be at least 5 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (summary && summary.value.trim().length > 0 && summary.value.trim().length < 20) {
+                    alert("If provided, summary should be at least 20 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                // For community articles
+                if (title && title.value.trim().length < 5) {
+                    alert("Title must be at least 5 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (content && content.value.trim().length > 0 && content.value.trim().length < 30) {
+                    alert("If provided, content should be at least 30 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (username && username.value.trim().length < 3) {
+                    alert("Username must be at least 3 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (author && author.value.trim().length < 3) {
+                    alert("Author must be at least 3 characters.");
+                    e.preventDefault();
+                    return;
+                }
+
+                // For all forms with links
+                if (link && !link.value.startsWith("http")) {
+                    alert("Please enter a valid URL starting with http or https.");
+                    e.preventDefault();
+                    return;
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
